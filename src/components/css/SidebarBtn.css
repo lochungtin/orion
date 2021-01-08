@@ -1,0 +1,11 @@
+.sidebarBtn {
+    align-items: center;
+    display: flex;
+    height: 5vh;
+    text-decoration: none;
+}
+
+.sidebarText {
+    color: #e0e0e0;
+    font-size: 1vw;   
+}

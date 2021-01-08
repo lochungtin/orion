@@ -1,38 +1,258 @@
-.App {
-  text-align: center;
+.root {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.content {
+    background-color: #23232c;
+    height: 100vh;
+    width: 85vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* login page */
+
+.loginStrip {    
+    align-items: center;
+    background-color: #23232c;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: start;
+    width: 23vw;
+    padding-top: 5vh;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.loginTopBar {
+    width: 36ch;
 }
 
-.App-link {
-  color: #61dafb;
+.loginIcons {
+    filter: invert();
+    height: 3ch;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.loginText {
+    font-size: 5vh;
+    color: #e0e0e0;
+}
+
+.loginInputLabel {
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    color: #e0e0e0;
+    width: 30ch;
+}
+
+.loginInputBox {
+    align-items: center;
+    display: flex;
+    border-bottom: #e0e0e0 solid 1px;
+    padding-bottom: 1vh;
+    width: 17vw;
+}
+
+.loginInput {
+    background-color: transparent;
+    border: 0;
+    color: #e0e0e0;
+    height: 3vh;
+    padding-left: 1vh;
+    outline: none;
+    width: 30ch;
+}
+
+.loginInput::placeholder {
+    color: #8a8a9c;
+}
+
+.loginBtn {
+    align-items: center;
+    background-color:#e6b329;
+    border: 0;
+    border-radius: 2vh;
+    display: flex;
+    height: 4vh;
+    justify-content: center;
+    margin-top: 2vh;
+    outline: none !important;
+    width: 35ch;
+}
+
+/* sidebar styles */
+
+nav {    
+    align-items: center;
+    background-color: #1a1a24;
+    display: flex;
+    flex-direction: column;
+    width: 15vw;
+}
+
+.sidebarEnds { 
+    align-items: center;    
+    display: flex;
+    height: 15vh;
+    width: 8vw;
+}
+
+.sidebarCornerText {
+    color: #e6b329;
+    font-size: 2vw;
+}
+
+.sidebarBtns {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    width: 8vw;
+}
+
+.logoutBtn {
+    color: #e0e0e0;
+    font-size: 2vh;
+}
+
+.logoutBtn:hover {
+    color: #e6b329;
+}
+
+/* file system styles */
+
+.fileTop {
+    align-items: center;
+    display: flex;
+    height: 10vh;
+    justify-content: space-between;
+    padding-left: 1vw;
+}
+
+.fileNavBtn {
+    height: 4vh;
+    padding-right: 1vw;
+    width: 2.5vw;    
+}
+
+.fileNavImg {
+    width: 1.5vw;
+}
+
+.fileDirBar {
+    align-items: center;
+    background-color: #373744;
+    border-radius: 3.5vh;
+    display: flex;
+    height: 4vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    overflow-x: scroll;
+    width: 58vw;
+}
+
+.fileDirBarText {
+    color: #e0e0e0;
+    font-size: 2vh;
+    padding-right: 0.1vw;
+    white-space: nowrap;
+}
+
+.fileSearchbarInput {
+    background-color: #373744;
+    border-radius: 2vh;
+    border: none;
+    color: #e0e0e0;
+    font-size:  2vh;
+    height: 4vh;
+    padding-left: 1vw;
+    margin-right: 0.5vw;
+    outline: none;
+    width: 9vw;
+}
+
+.fileSearchbarInput:focus {
+    width: 15vw;
+}
+
+.fileOptionBar {
+    align-items: center;
+    background-color: #1a1a24;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    height: 10vh;
+    width: 18vw;
+}
+
+.fileContent {
+    align-items: center;
+    display: flex;
+    height: 90vh;
+}
+
+.fileFolders {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    overflow: scroll;
+    width: 16vw;
+}
+
+.fileFolders::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+.fileFolders::-webkit-scrollbar-thumb {
+    background: #373744;
+}
+
+.fileFolder {
+    align-items: center;
+    display: flex;
+    height: 5vh;
+    width: 14vw;
+}
+
+.fileFolderImg {
+    width: 2.5vw;
+}
+
+.fileItemText {
+    color: #e0e0e0;
+    font-size: 1vw;
+    white-space: nowrap;
+}
+
+.fileFiles {
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    overflow: scroll;
+    padding-left: 1vw;
+}
+
+.fileFiles::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+.fileFiles::-webkit-scrollbar-thumb {
+    background: #373744;
+}
+
+.fileFileImg {
+    height: 3.5vh;
+    margin-right: 0.5vw;
+}
+
+.fileMoreInfo {
+    background-color: #1a1a24;
+    height: 90vh;
+    width: 20vw;
 }

@@ -7,6 +7,7 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// add report
 router.route('/add').post((req, res) => {
     const username = req.body.username;
     const success = Boolean(req.body.success);
@@ -16,6 +17,13 @@ router.route('/add').post((req, res) => {
 
     newRpt.save()
         .then(() => res.json('Report Added'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+// get report by id
+router.route('/:id').get((req, res) => {
+    Report.findById(req.params.id)
+        .then(rpt => res.json(rpt))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
