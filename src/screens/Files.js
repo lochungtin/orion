@@ -9,68 +9,55 @@ import file from '../img/file.png'
 import { store } from '../redux/store';
 import { fsBack, fsSetContent, fsSetDir } from '../redux/action';
 
+const clt = new W3CWebSocket('ws://127.0.0.1:8000');
+
 class Files extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dir: '/',
-            client: {},
             hidden: false,
             searchMode: false,
             selection: [],
-            stack: [],
-            root: '/',
         }
     }
 
     componentDidMount() {
-        const client = new W3CWebSocket('ws://127.0.0.1:8000');
-        client.send('get' + this.props.acc.rootDir);
-        client.onmessage = message => {
+        clt.send('get' + this.props.acc.rootDir);
+        clt.onmessage = message => {
             const cmd = message.data.slice(0, 3);
             const payload = message.data.substring(3);
-            console.log(message.data);
             switch (cmd) {
                 case 'cnt':
                     store.dispatch(fsSetContent(JSON.parse(payload)));
                     break;
             }
         }
+        store.dispatch(fsSetDir(this.props.acc.rootDir));
     }
 
-    append = folder => {
-        console.log('go to : ' + folder);
-        return this.state.dir + folder + '/';
-    }
+    append = folder => this.props.fs.dir + folder + '/';
 
     back = () => {
-        if (this.state.stack.length !== 0) {
-            var stack = [...this.state.stack];
-            const newDir = stack.pop();
-
-            this.props.connection.client.send('get' + newDir);
-            this.setState({ dir: newDir, stack: stack });
-        }
+        var l = this.props.fs.stack.length;
+        if (l > 1)
+            clt.send('get' + this.props.fs.stack[l - 2]);
+        store.dispatch(fsBack());
     }
 
     goto = dir => {
-        var stack = [...this.state.stack];
-        stack.push(this.state.dir);
-
-        this.props.connection.client.send('get' + dir);
-        this.setState({ dir: dir, stack: stack });
+        store.dispatch(fsSetDir(dir));
+        clt.send('get' + dir);
     }
 
     jump = dir => {
-        console.log('jump to: ' + dir);
-        if (!this.state.root.includes(dir)) {
-            var splt = this.state.dir.split('/').filter(d => d !== '');
+        if (!this.props.acc.rootDir.includes(dir)) {
+            var splt = this.props.fs.dir.split('/').filter(d => d !== '');
             var str = '/';
             splt.slice(0, splt.indexOf(dir) + 1).forEach(d => str += d + '/');
             return str;
         }
-        return this.state.root;
+        return this.props.acc.rootDir;
     }
 
     select = select => {
@@ -81,6 +68,7 @@ class Files extends React.Component {
         else
             arr.splice(index, 1);
         this.setState({ selection: arr });
+        console.log(arr);
     }
 
     sortHidden = (a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.');
@@ -97,7 +85,7 @@ class Files extends React.Component {
                         <img className='fileNavImg' src={chevL} />
                     </button>
                     <div className='fileDirBar'>
-                        {this.state.dir.split('/').filter(t => t !== '').map(t => {
+                        {this.props.fs.dir.split('/').filter(t => t !== '').map(t => {
                             return (
                                 <button onClick={() => this.goto(this.jump(t))} key={t}>
                                     <p className='fileDirBarText noselect'>{'/ ' + t}</p>
@@ -118,7 +106,7 @@ class Files extends React.Component {
                 </div>
                 <div className='fileContent'>
                     <div className='fileFolders'>
-                        {this.props.directories.dirs
+                        {this.props.fs.content.dirs
                             .filter(d => !d.startsWith('.') || this.state.hidden)
                             .sort(this.sortHidden)
                             .map(d => {
@@ -133,12 +121,12 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileFiles'>
-                        {this.props.directories.files
+                        {this.props.fs.content.files
                             .filter(d => !d.startsWith('.') || this.state.hidden)
                             .sort(this.sortHidden)
                             .map(f => {
                                 return (
-                                    <button onClick={() => this.select(f)} key={file}>
+                                    <button onClick={() => this.select(f)} key={f}>
                                         <div className='fileFolder noselect'>
                                             <img className='fileFileImg' src={file} alt='file' />
                                             <p className='fileItemText'>{f}</p>

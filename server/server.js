@@ -13,7 +13,8 @@ const wsServer = new webSocketServer({
 const clients = {};
 
 const getUniqueID = () => {
-    return Math.floor((1 + Math.random() * 0x10000)).toString(16);
+    const make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
+    return make() + make() + "-" + make();
 };
 
 wsServer.on('request', function (request) {
@@ -28,7 +29,7 @@ wsServer.on('request', function (request) {
 const messageHandler = (data, client) => {
     const cmd = data.utf8Data.slice(0, 3);
     const payload = data.utf8Data.substring(3);
-    //console.log(data.utf8Data);
+    console.log(data.utf8Data);
     switch(cmd) {
         case 'get':
             client.send('cnt' + JSON.stringify(getDir(payload)));
