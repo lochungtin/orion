@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import ToggleSwitch from '../components/ToggleSwitch';
 import folder from '../img/folder.png';
 import chevL from '../img/left.png';
 import file from '../img/file.png'
 import { store } from '../redux/store';
-import { setDirectory } from '../redux/action';
+import { fsBack, fsSetContent, fsSetDir } from '../redux/action';
 
 class Files extends React.Component {
 
@@ -14,6 +15,7 @@ class Files extends React.Component {
         super(props);
         this.state = {
             dir: '/',
+            client: {},
             hidden: false,
             searchMode: false,
             selection: [],
@@ -23,21 +25,15 @@ class Files extends React.Component {
     }
 
     componentDidMount() {
-        const client = this.props.connection.client;
-        client.send('ini');
+        const client = new W3CWebSocket('ws://127.0.0.1:8000');
+        client.send('get' + this.props.acc.rootDir);
         client.onmessage = message => {
             const cmd = message.data.slice(0, 3);
             const payload = message.data.substring(3);
             console.log(message.data);
             switch (cmd) {
-                case 'dir':
-                    if (this.state.root === '/')
-                        this.setState({ root: payload });
-                    this.setState({ dir: payload });
-                    client.send('get' + payload);
-                    break;
                 case 'cnt':
-                    store.dispatch(setDirectory(JSON.parse(payload)));
+                    store.dispatch(fsSetContent(JSON.parse(payload)));
                     break;
             }
         }
@@ -87,13 +83,7 @@ class Files extends React.Component {
         this.setState({ selection: arr });
     }
 
-    sortHidden = (a, b) => {
-        if (a.startsWith('.'))
-            return 1;
-        if (b.startsWith('.'))
-            return -1;
-        return 0;
-    }
+    sortHidden = (a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.');
 
     tFocus = v => this.setState({ searchMode: v });
 
@@ -167,8 +157,8 @@ class Files extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    connection: state.connection,
-    directories: state.directories,
+    acc: state.acc,
+    fs: state.fs,
 });
 
 export default connect(mapStateToProps)(Files);

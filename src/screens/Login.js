@@ -1,16 +1,19 @@
+import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import User from '../img/icon/user.png';
 import Lock from '../img/icon/lock.png';
+import { setLogin } from '../redux/action';
+import { store } from '../redux/store';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            email: '',
-            pswd: '',
+            username: '',
+            password: '',
             repswd: '',
             signup: false,
         }
@@ -19,11 +22,20 @@ class Login extends React.Component {
         this.handlePswd = this.handlePswd.bind(this);
     }
 
-    handleEmail = event => this.setState({ email: event.target.value });
+    handleEmail = event => this.setState({ username: event.target.value });
 
-    handlePswd = event => this.setState({ pswd: event.target.value });
+    handlePswd = event => this.setState({ password: event.target.value });
 
-    login = () => this.props.login(this.state.email, this.state.pswd);
+    login = () => {
+        axios.get('http://localhost:5000/accounts/')
+            .then(res => {
+                var account = res.data.filter(acc => acc.username === this.state.username)[0];
+                if (account !== undefined) {
+                    if (account.password === this.state.password) 
+                        store.dispatch(setLogin(account));
+                }
+            });
+    }
 
     render() {
         return (
@@ -54,9 +66,3 @@ class Login extends React.Component {
         )
     }
 }
-
-const mapStateToProps = state => ({
-    connection: state.connection,
-});
-
-export default connect(mapStateToProps)(Login);

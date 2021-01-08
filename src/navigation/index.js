@@ -1,48 +1,35 @@
 import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
 import SidebarBtn from '../components/SidebarBtn';
-import { store } from '../redux/store';
-import { setClient, setDirectory } from '../redux/action';
 import Dashboard from '../screens/Dashboard';
 import Files from '../screens/Files';
 import History from '../screens/History';
 import Login from '../screens/Login';
 import Settings from '../screens/Settings';
 import Statistics from '../screens/Statistics';
+import { setLogout } from '../redux/action';
+import { store } from '../redux/store';
 
 class Index extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-            loggedIn: false,
-        }
     }
 
-    componentDidMount() {
-        const client = new W3CWebSocket('ws://localhost:8000');
-        client.onopen = () => store.dispatch(setClient(client));
-        client.onmessage = message => {
-            if (message.data === 'cnf')
-                this.setState({ loggedIn: true });
-        }
-        store.dispatch(setDirectory({
-            dirs: [],
-            hdirs: [],
-            files: [],
-            hfiles: []
-        }));
+    logout = () => {
+        store.dispatch(setLogout());
+        window.location = 'http://localhost:3000/'
     }
-
-    logout = () => this.setState({ loggedIn: false });
 
     render() {
         return (
             <>
-                {this.state.loggedIn ?
+                {this.props.acc === null ?
+                    <div className='root'>
+                        <Login />
+                    </div> :
                     <Router>
                         <div className='root'>
                             <nav>
@@ -78,10 +65,7 @@ class Index extends React.Component {
                                 </div>
                             </Switch>
                         </div>
-                    </Router> :
-                    <div className='root'>
-                        <Login login={(u, p) => { this.props.connection.client.send('log' + u + ' ' + p) }} />
-                    </div>
+                    </Router>
                 }
             </>
         );
@@ -89,7 +73,7 @@ class Index extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    connection: state.connection,
+    acc: state.acc
 });
 
 export default connect(mapStateToProps)(Index);

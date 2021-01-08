@@ -27,13 +27,26 @@ router.route('/:id').get((req, res) => {
 });
 
 // update password
-router.route('/update/:id').post((req, res) => {
+router.route('/update/pswd/:id').post((req, res) => {
     Account.findById(req.params.id)
         .then(acc => {
             acc.password = req.body.password;
 
             acc.save()
                 .then(() => res.json('Password Updated'))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+// update rootDir
+router.route('/update/rtdir/:id').post((req, res) => {
+    Account.findById(req.params.id)
+        .then(acc => {
+            acc.rootDir = req.body.rootDir;
+
+            acc.save()
+                .then(() => res.json('Root Directory Updated'))
                 .catch(err => res.status(400).json('Error: ' + err));
         })
         .catch(err => res.status(400).json('Error: ' + err));

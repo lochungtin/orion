@@ -12,6 +12,10 @@ const accountSchema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    rootDir: {
+        type: String,
+        default: '/' , 
     }
 }, {
     timestamps: true, 

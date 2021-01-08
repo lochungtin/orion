@@ -1,26 +1,30 @@
 import { combineReducers } from 'redux';
-import { SET_CLIENT, SET_DIRECTORY } from './action';
+import { FS_SET_CONTENT, FS_SET_DIR, SET_LOGIN, SET_LOGOUT, } from './action';
 
-
-const connection = (config = {}, action) => {
-    switch(action.type) {
-        case SET_CLIENT:
-            var newConfig = {...config}
-            newConfig['client'] = action.payload;
-            return newConfig;
+const acc = (acc = null, action) => {
+    switch (action.type) {
+        case SET_LOGIN:
+            return action.payload;
+        case SET_LOGOUT:
+            return null;
     }
-    return config;
+    return acc;
 }
 
-const directories = (dir = {}, action) => {
-    switch(action.type) {
-        case SET_DIRECTORY:
-            return action.payload;
+const fs = (data = {}, action) => {
+    var update = {...data};
+    switch (action.type) {
+        case FS_SET_DIR:
+            update.dir = action.payload;
+            return update;
+        case FS_SET_CONTENT:
+            update.content = action.payload;
+            return update;
     }
-    return dir;
+    return data;
 }
 
 export default combineReducers({
-    connection: connection,
-    directories: directories,
-})
+    acc: acc,
+    fs: fs,
+});
