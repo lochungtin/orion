@@ -5,7 +5,8 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import ToggleSwitch from '../components/ToggleSwitch';
 import folder from '../img/folder.png';
 import chevL from '../img/left.png';
-import file from '../img/file.png'
+import fileE from '../img/fileE.png'
+import fileF from '../img/fileF.png'
 import { store } from '../redux/store';
 import { fsBack, fsSetContent, fsSetDir } from '../redux/action';
 
@@ -16,6 +17,7 @@ class Files extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            details: {},
             hidden: false,
             searchMode: false,
             selection: [],
@@ -31,6 +33,8 @@ class Files extends React.Component {
                 case 'cnt':
                     store.dispatch(fsSetContent(JSON.parse(payload)));
                     break;
+                case 'dtl':
+                    this.setState({ details: JSON.parse(payload) });
             }
         }
         store.dispatch(fsSetDir(this.props.acc.rootDir));
@@ -68,8 +72,13 @@ class Files extends React.Component {
         else
             arr.splice(index, 1);
         this.setState({ selection: arr });
-        console.log(arr);
+        if (arr.length === 1)
+            clt.send('dtl' + this.props.fs.dir + arr[0]);
+        else
+            this.setState({ details: {}});
     }
+
+    size = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
 
     sortHidden = (a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.');
 
@@ -128,7 +137,7 @@ class Files extends React.Component {
                                 return (
                                     <button onClick={() => this.select(f)} key={f}>
                                         <div className='fileFolder noselect'>
-                                            <img className='fileFileImg' src={file} alt='file' />
+                                            <img className='fileFileImg' src={this.state.selection.includes(f) ? fileF : fileE} alt='file' />
                                             <p className='fileItemText'>{f}</p>
                                         </div>
                                     </button>
@@ -136,7 +145,10 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileMoreInfo'>
-
+                        <p>{this.state.details.path}</p>
+                        <p>{this.state.details.size}</p>
+                        <p>{this.state.details.bTime}</p>
+                        <p>{this.state.details.mTime}</p>
                     </div>
                 </div>
             </div>

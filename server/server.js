@@ -34,10 +34,12 @@ const messageHandler = (data, client) => {
         case 'get':
             client.send('cnt' + JSON.stringify(getDir(payload)));
             break;
+        case 'dtl':
+            client.send('dtl' + JSON.stringify(getDetails(payload)));
     }    
 }
 
-const getDir = (dir) => {
+const getDir = dir => {
     var content = {
         dirs: [],
         files: [],
@@ -50,4 +52,15 @@ const getDir = (dir) => {
     })
      
     return content;
+}
+
+const getDetails = path => {
+    console.log(path);
+    const f = fs.statSync(path);
+    return {
+        path: path,
+        bTime: f.birthtime,
+        mTime: f.mtime,
+        size: f.size
+    }
 }
