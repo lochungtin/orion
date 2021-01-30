@@ -60,7 +60,7 @@ const getDir = dir => {
         files: [],
     };
 
-    fs.readdirSync(dir).forEach(n => content[fs.statSync(dir + n).isDirectory() ? 'dirs' : 'files'].push(n));
+    fs.readdirSync(dir).forEach(n => content[fs.statSync(dir + '/' + n).isDirectory() ? 'dirs' : 'files'].push(n));
 
     return content;
 }
