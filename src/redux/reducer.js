@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DIR, SET_LOGIN, SET_LOGOUT, } from './action';
+import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -11,7 +11,16 @@ const acc = (acc = null, action) => {
     return acc;
 }
 
+const clt = (clt = {}, action) => {
+    switch (action.type) {
+        case SET_CLIENT:
+            return action.payload;
+    }
+    return clt;
+}
+
 const fsInit = {
+    details: {},
     dir: '',
     content: {
         dirs: [],
@@ -35,11 +44,15 @@ const fs = (data = fsInit, action) => {
         case FS_SET_CONTENT:
             update.content = action.payload;
             return update;
+        case FS_SET_DETAIL:
+            update.details = action.payload;
+            return update;
     }
     return data;
 }
 
 export default combineReducers({
     acc: acc,
+    clt: clt,
     fs: fs,
 });

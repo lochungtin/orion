@@ -12,12 +12,8 @@ import Statistics from '../screens/Statistics';
 import { setLogout } from '../redux/action';
 import { store } from '../redux/store';
 
-class Index extends React.Component {
-
-    constructor() {
-        super();
-    }
-
+class AppNav extends React.Component {
+    
     logout = () => {
         store.dispatch(setLogout());
         window.location = 'http://localhost:3000/'
@@ -76,4 +72,4 @@ const mapStateToProps = state => ({
     acc: state.acc
 });
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(AppNav);

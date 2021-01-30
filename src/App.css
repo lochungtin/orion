@@ -21,7 +21,7 @@
     flex-direction: column;
     height: 100vh;
     justify-content: start;
-    width: 23vw;
+    width: 45ch;
     padding-top: 5vh;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .loginText {
-    font-size: 5vh;
+    font-size: 5ch;
     color: #e0e0e0;
 }
 
@@ -51,7 +51,7 @@
     display: flex;
     border-bottom: #e0e0e0 solid 1px;
     padding-bottom: 1vh;
-    width: 17vw;
+    width: 30ch;
 }
 
 .loginInput {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import ToggleSwitch from '../components/ToggleSwitch';
 import folder from '../img/folder.png';
@@ -8,16 +7,13 @@ import chevL from '../img/left.png';
 import fileE from '../img/fileE.png'
 import fileF from '../img/fileF.png'
 import { store } from '../redux/store';
-import { fsBack, fsSetContent, fsSetDir } from '../redux/action';
-
-const clt = new W3CWebSocket('ws://127.0.0.1:8000');
+import { fsBack, fsSetDetail, fsSetDir } from '../redux/action';
 
 class Files extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            details: {},
             hidden: false,
             searchMode: false,
             selection: [],
@@ -25,39 +21,28 @@ class Files extends React.Component {
     }
 
     componentDidMount() {
-        clt.send('get' + this.props.acc.rootDir);
-        clt.onmessage = message => {
-            const cmd = message.data.slice(0, 3);
-            const payload = message.data.substring(3);
-            switch (cmd) {
-                case 'cnt':
-                    store.dispatch(fsSetContent(JSON.parse(payload)));
-                    break;
-                case 'dtl':
-                    this.setState({ details: JSON.parse(payload) });
-            }
-        }
+        this.props.clt.send('get' + this.props.acc.rootDir);
         store.dispatch(fsSetDir(this.props.acc.rootDir));
     }
 
-    append = folder => this.props.fs.dir + folder + '/';
+    append = folder => this.props.fs.dir + '/' + folder;
 
     back = () => {
         var l = this.props.fs.stack.length;
         if (l > 1)
-            clt.send('get' + this.props.fs.stack[l - 2]);
+            this.props.clt.send('get' + this.props.fs.stack[l - 2]);
         store.dispatch(fsBack());
     }
 
     goto = dir => {
         store.dispatch(fsSetDir(dir));
-        clt.send('get' + dir);
+        this.props.clt.send('get' + dir);
     }
 
     jump = dir => {
         if (!this.props.acc.rootDir.includes(dir)) {
-            var splt = this.props.fs.dir.split('/').filter(d => d !== '');
-            var str = '/';
+            const splt = this.props.fs.dir.split('/').filter(d => d !== '');
+            let str = '/';
             splt.slice(0, splt.indexOf(dir) + 1).forEach(d => str += d + '/');
             return str;
         }
@@ -66,16 +51,16 @@ class Files extends React.Component {
 
     select = select => {
         const arr = [...this.state.selection];
-        const index = arr.indexOf(select);
+        const index = arr.indexOf(this.props.fs.dir + select);
         if (index === -1)
-            arr.push(select);
+            arr.push(this.props.fs.dir + select);
         else
             arr.splice(index, 1);
         this.setState({ selection: arr });
         if (arr.length === 1)
-            clt.send('dtl' + this.props.fs.dir + arr[0]);
+            this.props.clt.send('dtl' + arr[0]);
         else
-            this.setState({ details: {}});
+            store.dispatch(fsSetDetail({}));
     }
 
     size = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
@@ -137,7 +122,7 @@ class Files extends React.Component {
                                 return (
                                     <button onClick={() => this.select(f)} key={f}>
                                         <div className='fileFolder noselect'>
-                                            <img className='fileFileImg' src={this.state.selection.includes(f) ? fileF : fileE} alt='file' />
+                                            <img className='fileFileImg' src={this.state.selection.includes(this.props.fs.dir + f) ? fileF : fileE} alt='file' />
                                             <p className='fileItemText'>{f}</p>
                                         </div>
                                     </button>
@@ -145,10 +130,10 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileMoreInfo'>
-                        <p>{this.state.details.path}</p>
-                        <p>{this.state.details.size}</p>
-                        <p>{this.state.details.bTime}</p>
-                        <p>{this.state.details.mTime}</p>
+                        <p>{this.props.fs.details.path}</p>
+                        <p>{this.props.fs.details.size}</p>
+                        <p>{this.props.fs.details.bTime}</p>
+                        <p>{this.props.fs.details.mTime}</p>
                     </div>
                 </div>
             </div>
@@ -158,6 +143,7 @@ class Files extends React.Component {
 
 const mapStateToProps = state => ({
     acc: state.acc,
+    clt: state.clt,
     fs: state.fs,
 });
 

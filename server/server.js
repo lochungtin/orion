@@ -11,46 +11,57 @@ const wsServer = new webSocketServer({
 });
 
 const clients = {};
+const srcClients = {};
 
-const getUniqueID = () => {
-    const make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
-    return make() + make() + "-" + make();
-};
+const make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
+const getUniqueID = () => make() + make() + "-" + make();
 
 wsServer.on('request', function (request) {
     const userID = getUniqueID();
     const client = request.accept(null, request.origin);
     clients[userID] = client;
-    console.log(`Client: ${userID} connected at [${new Date().toLocaleString()}] | Origin: ${request.origin}`);
+    client.on('message', msg => messageHandler(msg, client, userID));
+    client.on('close', () => endConnection(userID));
 
-    client.on('message', msg => messageHandler(msg, client));
+    logger('New client connection - UID: *', userID);
+    logger('General Connections No.: *', Object.keys(clients).length);
 });
 
-const messageHandler = (data, client) => {
-    const cmd = data.utf8Data.slice(0, 3);
-    const payload = data.utf8Data.substring(3);
-    console.log(data.utf8Data);
-    switch(cmd) {
+const messageHandler = (data, client, userID) => {
+    const msg = data.utf8Data;
+    const cmd = msg.slice(0, 3);
+    const payload = msg.substring(3);
+    logger('Message received: *', (msg.substring(0, 80) + (msg.length > 80 ? '...' : '')));
+    switch (cmd) {
         case 'get':
+            // request content of RPI directory
             client.send('cnt' + JSON.stringify(getDir(payload)));
             break;
         case 'dtl':
+            // request details of file on RPI
             client.send('dtl' + JSON.stringify(getDetails(payload)));
-    }    
+            break;
+        case 'src':
+            // establish source client connection
+            srcClients[userID] = { client, root: payload };
+            client.send('tvl' + payload);
+            logger('Source Connections No.: *', Object.keys(clients).length);
+            break;
+        case 'cfs':
+            // receive directory content from source client
+            // console.log(JSON.parse(payload));
+            
+    }
 }
 
 const getDir = dir => {
-    var content = {
+    const content = {
         dirs: [],
         files: [],
     };
-    const dirArr = fs.readdirSync(dir);
 
-    dirArr.forEach(n => {
-        var tag = fs.statSync(dir + n).isDirectory() ? 'dirs' : 'files';
-        content[tag].push(n);
-    })
-     
+    fs.readdirSync(dir).forEach(n => content[fs.statSync(dir + n).isDirectory() ? 'dirs' : 'files'].push(n));
+
     return content;
 }
 
@@ -63,4 +74,21 @@ const getDetails = path => {
         mTime: f.mtime,
         size: f.size
     }
+}
+
+const endConnection = userID => {
+    delete clients[userID];
+    delete srcClients[userID];
+    logger('Client disconnected - UID: ', userID);
+    logger('General Connections No.: *', Object.keys(clients).length);
+    logger('Source Connections No.: *', Object.keys(clients).length);
+}
+
+const logger = (text, ...args) => {
+    const splt = text.split('*');
+    let builder = '';
+    for (let i = 0; i < args.length; ++i)
+        builder += (splt[i] + args[i]);
+
+    console.log(`[${new Date().toLocaleString()}] ${builder}`);
 }

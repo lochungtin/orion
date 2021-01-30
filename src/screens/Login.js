@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React from 'react';
-import { connect } from 'react-redux';
 
+import clt from '../client';
 import User from '../img/icon/user.png';
 import Lock from '../img/icon/lock.png';
-import { setLogin } from '../redux/action';
+import { setClient, setLogin } from '../redux/action';
 import { store } from '../redux/store';
 
 export default class Login extends React.Component {
@@ -31,8 +31,10 @@ export default class Login extends React.Component {
             .then(res => {
                 var account = res.data.filter(acc => acc.username === this.state.username)[0];
                 if (account !== undefined) {
-                    if (account.password === this.state.password) 
+                    if (account.password === this.state.password) {
                         store.dispatch(setLogin(account));
+                        store.dispatch(setClient(clt));
+                    }
                 }
             });
     }
