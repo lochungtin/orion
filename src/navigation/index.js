@@ -8,7 +8,6 @@ import Files from '../screens/Files';
 import History from '../screens/History';
 import Login from '../screens/Login';
 import Settings from '../screens/Settings';
-import Statistics from '../screens/Statistics';
 import { setLogout } from '../redux/action';
 import { store } from '../redux/store';
 
@@ -36,7 +35,6 @@ class AppNav extends React.Component {
                                     <SidebarBtn text={'dashboard'} />
                                     <SidebarBtn text={'files'} />
                                     <SidebarBtn text={'history'} />
-                                    <SidebarBtn text={'statistics'} />
                                     <SidebarBtn text={'settings'} />
                                 </div>
                                 <div className='sidebarEnds'>
@@ -56,7 +54,6 @@ class AppNav extends React.Component {
                                     <Route exact path='/dashboard' component={Dashboard} />
                                     <Route exact path='/files' component={Files} />
                                     <Route exact path='/history' component={History} />
-                                    <Route exact path='/statistics' component={Statistics} />
                                     <Route exact path='/settings' component={Settings} />
                                 </div>
                             </Switch>

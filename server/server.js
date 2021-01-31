@@ -50,7 +50,11 @@ const messageHandler = (data, client, userID) => {
         case 'cfs':
             // receive directory content from source client
             // console.log(JSON.parse(payload));
-            
+            break;
+        case 'srq':
+            // receive search request of dir
+            client.send('sre' + JSON.stringify(getSearch(payload)));
+            break;
     }
 }
 
@@ -66,14 +70,19 @@ const getDir = dir => {
 }
 
 const getDetails = path => {
-    console.log(path);
     const f = fs.statSync(path);
     return {
         path: path,
-        bTime: f.birthtime,
         mTime: f.mtime,
         size: f.size
-    }
+    };
+}
+
+const getSearch = payload => {
+    const obj = JSON.parse(payload);
+    return {
+        result: fs.readdirSync(obj.dir).filter(n => fs.statSync(obj.dir + '/' + n).isFile() && n.startsWith(obj.text))
+    };
 }
 
 const endConnection = userID => {

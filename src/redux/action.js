@@ -9,15 +9,21 @@ export const fsSetContent = payload => ({
     payload,
 });
 
+export const FS_SET_DETAIL = 'FS_SET_DETAIL';
+export const fsSetDetail = payload => ({
+    type: FS_SET_DETAIL,
+    payload,
+});
+
 export const FS_SET_DIR = 'FS_SET_DIR';
 export const fsSetDir = payload => ({
     type: FS_SET_DIR,
     payload,
 });
 
-export const FS_SET_DETAIL = 'FS_SET_DETAIL';
-export const fsSetDetail = payload => ({
-    type: FS_SET_DETAIL,
+export const FS_SET_SEARCH = 'FS_SET_SEARCH';
+export const fsSetSearch = payload => ({
+    type: FS_SET_SEARCH,
     payload,
 });
 

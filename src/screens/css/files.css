@@ -1,0 +1,158 @@
+
+.fileTop {
+    align-items: center;
+    display: flex;
+    height: 10vh;
+    justify-content: space-between;
+    padding-left: 1vw;
+}
+
+.fileNavBtn {
+    height: 4vh;
+    padding-right: 1vw;
+    width: 2.5vw;
+}
+
+.fileNavImg {
+    width: 1.5vw;
+}
+
+.fileDirBar {
+    align-items: center;
+    background-color: #29293d;
+    border-radius: 3.5vh;
+    display: flex;
+    height: 4vh;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    overflow-x: scroll;
+    width: 58vw;
+}
+
+.fileDirBarText {
+    color: #e0e0e0;
+    font-size: 2vh;
+    padding-right: 0.1vw;
+    white-space: nowrap;
+}
+
+.fileSearchbarInput {
+    background-color: #29293d;
+    border-radius: 2vh;
+    border: none;
+    color: #e0e0e0;
+    font-size: 2vh;
+    height: 4vh;
+    padding-left: 1vw;
+    outline: none;
+    width: 9vw;
+}
+
+.fileSearchbarInput:focus {
+    display: flex;
+    flex: 1;
+}
+
+.fileOptionBar {
+    align-items: center;
+    background-color: #1f1f33;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    height: 10vh;
+    width: 18vw;
+}
+
+.fileContent {
+    align-items: center;
+    display: flex;
+    height: 90vh;
+}
+
+.fileFolders {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    overflow: scroll;
+    width: 16vw;
+}
+
+.fileFolders::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+.fileFolders::-webkit-scrollbar-thumb {
+    background: #373744;
+}
+
+.fileFolder {
+    align-items: center;
+    display: flex;
+    height: 5vh;
+    width: 14vw;
+}
+
+.fileFolderImg {
+    width: 2.5vw;
+}
+
+.fileItemText {
+    color: #e0e0e0;
+    font-size: 1vw;
+    white-space: nowrap;
+}
+
+.fileFiles {
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    overflow: scroll;
+    padding-left: 1vw;
+}
+
+.fileFiles::-webkit-scrollbar {
+    width: 0.5vw;
+}
+
+.fileFiles::-webkit-scrollbar-thumb {
+    background: #373744;
+}
+
+.fileFileImg {
+    height: 3.5vh;
+    margin-right: 0.5vw;
+}
+
+.fileMoreInfo {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color:#1f1f33;
+    height: 90vh;
+    justify-content: flex-start;
+    width: 20vw;
+}
+
+.fileInfoPic {
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+}
+
+.fileInfoContainer {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2ch;
+    width: 18vw;
+}
+
+.fileInfoText {
+    overflow-wrap: break-word;
+    width: 13vw;
+}

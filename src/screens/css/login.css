@@ -1,0 +1,82 @@
+.loginRoot {
+    background-image: url('../../img/loginBG.png');
+    background-size: 101vw;
+}
+
+.loginStrip {
+    align-items: center;
+    background-color: rgba(35, 35, 44, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.loginTopBar {
+    width: 36ch;
+}
+
+.loginIcons {
+    filter: invert();
+    height: 3ch;
+}
+
+.loginText {
+    font-size: 5ch;
+    color: #e0e0e0;
+}
+
+.loginInputLabel {
+    margin-top: 3vh;
+    margin-bottom: 1vh;
+    color: #e0e0e0;
+    width: 30ch;
+}
+
+.loginInputBox {
+    align-items: center;
+    display: flex;
+    border-bottom: #e0e0e0 solid 1px;
+    padding-bottom: 1vh;
+    width: 30ch;
+}
+
+.loginInput {
+    background-color: transparent;
+    border: 0;
+    color: #e0e0e0;
+    height: 3vh;
+    padding-left: 1vh;
+    outline: none;
+    width: 30ch;
+}
+
+.loginInput::placeholder {
+    color: #8a8a9c;
+}
+
+.loginBtns {
+    align-items: center;
+    border: 0;
+    border-radius: 2vh;
+    display: flex;
+    height: 4vh;
+    justify-content: center;
+    margin-top: 2vh;
+    outline: none !important;
+    width: 35ch;
+}
+
+.loginBtn {
+    background-color: #e6b329;
+}
+
+.signupBtn {
+    background-color: rgba(224, 224, 224, 0.1);
+    color: #e0e0e0;
+}
+
+.signupBtn:hover {
+    background-color: rgba(224, 224, 224, 0.5);
+}

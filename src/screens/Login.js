@@ -8,6 +8,8 @@ import User from '../img/icon/user.png';
 import { setClient, setLogin } from '../redux/action';
 import { store } from '../redux/store';
 
+import './css/login.css';
+
 export default class Login extends React.Component {
 
     constructor() {
@@ -71,7 +73,7 @@ export default class Login extends React.Component {
                     if (account !== undefined) {
                         if (account.password === this.state.password) {
                             store.dispatch(setLogin(account));
-                            store.dispatch(setClient(makeClient()));
+                            store.dispatch(setClient(makeClient(window.location.hostname)));
                         }
                         else
                             this.setState({ prompt: 'Incorrect Password' });

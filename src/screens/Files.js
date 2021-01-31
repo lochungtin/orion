@@ -6,8 +6,10 @@ import folder from '../img/folder.png';
 import chevL from '../img/left.png';
 import fileE from '../img/fileE.png'
 import fileF from '../img/fileF.png'
+import { fsBack, fsSetDetail, fsSetDir, fsSetSearch } from '../redux/action';
 import { store } from '../redux/store';
-import { fsBack, fsSetDetail, fsSetDir } from '../redux/action';
+
+import './css/files.css';
 
 class Files extends React.Component {
 
@@ -16,8 +18,10 @@ class Files extends React.Component {
         this.state = {
             hidden: false,
             searchMode: false,
-            selection: [],
+            selection: '',
         }
+
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +43,14 @@ class Files extends React.Component {
         this.props.clt.send('get' + dir);
     }
 
+    handleSearch = event => {
+        const text = event.target.value;
+        if (text.length > 2)
+            this.props.clt.send('srq' + JSON.stringify({ dir: this.props.fs.dir, text }));
+        else if (this.props.fs.search) 
+            this.props.clt.send('get' + this.props.fs.dir);
+    }
+
     jump = dir => {
         if (!this.props.acc.rootDir.includes(dir)) {
             const splt = this.props.fs.dir.split('/').filter(d => d !== '');
@@ -49,23 +61,23 @@ class Files extends React.Component {
         return this.props.acc.rootDir;
     }
 
+    make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
+
+    rnKey = () => this.make() + this.make() + '-' + this.make();
+    
     select = select => {
-        const arr = [...this.state.selection];
-        const index = arr.indexOf(this.props.fs.dir + select);
-        if (index === -1)
-            arr.push(this.props.fs.dir + select);
-        else
-            arr.splice(index, 1);
-        this.setState({ selection: arr });
-        if (arr.length === 1)
-            this.props.clt.send('dtl' + arr[0]);
-        else
+        const selected = this.props.fs.dir + '/' + select;
+        if (this.state.selection === selected)
             store.dispatch(fsSetDetail({}));
+        else {
+            this.props.clt.send('dtl' + selected);
+            this.setState({ selection: selected });
+        }
     }
 
-    size = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
+    size = bytes => Math.round(this.sizeR(bytes) * 100) / 100 + '' + ['B', 'KB', 'MB', 'GB'][Math.floor(Math.log(bytes) / Math.log(1024))];
 
-    sortHidden = (a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.');
+    sizeR = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
 
     tFocus = v => this.setState({ searchMode: v });
 
@@ -93,19 +105,20 @@ class Files extends React.Component {
                             className='fileSearchbarInput'
                             onFocus={() => this.tFocus(true)}
                             onBlur={() => this.tFocus(false)}
+                            onChange={this.handleSearch}
                             placeholder='search ...'
                             type='text'
                         />
                     </div>
                 </div>
                 <div className='fileContent'>
-                    <div className='fileFolders'>
+                    {!this.props.fs.search && <div className='fileFolders'>
                         {this.props.fs.content.dirs
                             .filter(d => !d.startsWith('.') || this.state.hidden)
-                            .sort(this.sortHidden)
+                            .sort((a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.'))
                             .map(d => {
                                 return (
-                                    <button onClick={() => this.goto(this.append(d))} key={d}>
+                                    <button onClick={() => this.goto(this.append(d))} key={this.rnKey()}>
                                         <div className='fileFolder noselect'>
                                             <img className='fileFolderImg' src={folder} alt='folder' />
                                             <p className='fileItemText'>{d.substring(0, 15) + (d.length > 15 ? '...' : '')}</p>
@@ -113,16 +126,16 @@ class Files extends React.Component {
                                     </button>
                                 );
                             })}
-                    </div>
+                    </div>}
                     <div className='fileFiles'>
                         {this.props.fs.content.files
                             .filter(d => !d.startsWith('.') || this.state.hidden)
                             .sort(this.sortHidden)
                             .map(f => {
                                 return (
-                                    <button onClick={() => this.select(f)} key={f}>
+                                    <button onClick={() => this.select(f)} key={this.rnKey()}>
                                         <div className='fileFolder noselect'>
-                                            <img className='fileFileImg' src={this.state.selection.includes(this.props.fs.dir + f) ? fileF : fileE} alt='file' />
+                                            <img className='fileFileImg' src={this.state.selection.includes(this.props.fs.dir + '/' + f) ? fileF : fileE} alt='file' />
                                             <p className='fileItemText'>{f}</p>
                                         </div>
                                     </button>
@@ -130,10 +143,25 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileMoreInfo'>
-                        <p>{this.props.fs.details.path}</p>
-                        <p>{this.props.fs.details.size}</p>
-                        <p>{this.props.fs.details.bTime}</p>
-                        <p>{this.props.fs.details.mTime}</p>
+                        {this.state.selection && <>
+                            <img className='fileInfoPic' src={fileF} alt='file' />
+                            <div className='fileInfoContainer'>
+                                <p>Size: </p>
+                                <p className='fileInfoText'>{this.props.fs.details.size ? this.size(this.props.fs.details.size) : ''}</p>
+                            </div>
+                            <div className='fileInfoContainer'>
+                                <p>L.M. Date: </p>
+                                <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleDateString() : ''}</p>
+                            </div>
+                            <div className='fileInfoContainer'>
+                                <p>L.M. Time: </p>
+                                <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleTimeString() : ''}</p>
+                            </div>
+                            <div className='fileInfoContainer'>
+                                <p>Path: </p>
+                                <p className='fileInfoText'>{this.props.fs.details.path}</p>
+                            </div>
+                        </>}
                     </div>
                 </div>
             </div>
