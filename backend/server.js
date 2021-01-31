@@ -15,16 +15,13 @@ const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
 const connection = mongoose.connection;
 
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-});
+connection.once('open', () => console.log("MongoDB database connection established successfully"));
+app.listen(port, () => console.log(`Server is running on port: ${port}`));
 
 const accountRouter = require('./routes/accounts');
+const deviceRouter = require('./routes/devices');
 const reportRouter = require('./routes/reports');
 
 app.use('/accounts', accountRouter);
+app.use('/devices', deviceRouter);
 app.use('/reports', reportRouter);

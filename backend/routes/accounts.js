@@ -9,10 +9,11 @@ router.route('/').get((req, res) => {
 
 // add account
 router.route('/add').post((req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const newAcc = new Account({ username, password });
+    const newAcc = new Account({ 
+        username: req.body.username,
+        password: req.body.password,
+        rootDir: req.body.rootDir,
+    });
 
     newAcc.save()
         .then(() => res.json('Account Created'))

@@ -1,29 +1,28 @@
 const router = require('express').Router();
-let Report = require('../models/report.model');
+let Device = require('../models/device.model');
 
 router.route('/').get((req, res) => {
-    Report.find()
-        .then(rpt => res.json(rpt))
+    Device.find()
+        .then(dev => res.json(dev))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// add report
+// add device
 router.route('/add').post((req, res) => {
-    const newRpt = new Report({ 
-        timestamp: new Date().getTime().toString(),
-        connections: req.body.connections,
-        transfers: req.body.transfers,
+    const newDevice = new Device({ 
+        name: req.body.username,
+        rootDir: req.body.rootDir,
     });
 
-    newRpt.save()
-        .then(() => res.json('Report Added'))
+    newDevice.save()
+        .then(() => res.json('Device Added'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
 // get report by id
 router.route('/:id').get((req, res) => {
-    Report.findById(req.params.id)
-        .then(rpt => res.json(rpt))
+    Device.findById(req.params.id)
+        .then(dev => res.json(dev))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 

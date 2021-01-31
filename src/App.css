@@ -13,16 +13,19 @@
 
 /* login page */
 
-.loginStrip {    
+.loginRoot {
+    background-image: url('./img/loginBG.png');
+    background-size: 101vw;
+}
+
+.loginStrip {
     align-items: center;
-    background-color: #23232c;
+    background-color: rgba(35, 35, 44, 0.4);
     display: flex;
-    flex: 1;
     flex-direction: column;
+    justify-content: center;
     height: 100vh;
-    justify-content: start;
-    width: 45ch;
-    padding-top: 5vh;
+    width: 100vw;
 }
 
 .loginTopBar {
@@ -68,9 +71,8 @@
     color: #8a8a9c;
 }
 
-.loginBtn {
+.loginBtns {
     align-items: center;
-    background-color:#e6b329;
     border: 0;
     border-radius: 2vh;
     display: flex;
@@ -81,9 +83,22 @@
     width: 35ch;
 }
 
+.loginBtn {
+    background-color: #e6b329;
+}
+
+.signupBtn {
+    background-color: rgba(224, 224, 224, 0.05);
+    color: #e0e0e0;
+}
+
+.signupBtn:hover {
+    background-color: rgba(224, 224, 224, 0.5);
+}
+
 /* sidebar styles */
 
-nav {    
+nav {
     align-items: center;
     background-color: #1a1a24;
     display: flex;
@@ -91,8 +106,8 @@ nav {
     width: 15vw;
 }
 
-.sidebarEnds { 
-    align-items: center;    
+.sidebarEnds {
+    align-items: center;
     display: flex;
     height: 15vh;
     width: 8vw;
@@ -132,7 +147,7 @@ nav {
 .fileNavBtn {
     height: 4vh;
     padding-right: 1vw;
-    width: 2.5vw;    
+    width: 2.5vw;
 }
 
 .fileNavImg {
@@ -163,7 +178,7 @@ nav {
     border-radius: 2vh;
     border: none;
     color: #e0e0e0;
-    font-size:  2vh;
+    font-size: 2vh;
     height: 4vh;
     padding-left: 1vw;
     margin-right: 0.5vw;

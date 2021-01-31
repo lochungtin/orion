@@ -23,7 +23,7 @@ wsServer.on('request', function (request) {
     client.on('message', msg => messageHandler(msg, client, userID));
     client.on('close', () => endConnection(userID));
 
-    logger('New client connection - UID: *', userID);
+    logger('New client connection - UID: *@*', userID, request.origin);
     logger('General Connections No.: *', Object.keys(clients).length);
 });
 

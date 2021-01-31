@@ -15,8 +15,8 @@ import { store } from '../redux/store';
 class AppNav extends React.Component {
     
     logout = () => {
+        this.props.clt.close();
         store.dispatch(setLogout());
-        window.location = 'http://localhost:3000/'
     }
 
     render() {
@@ -69,7 +69,8 @@ class AppNav extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    acc: state.acc
+    acc: state.acc,
+    clt: state.clt,
 });
 
 export default connect(mapStateToProps)(AppNav);

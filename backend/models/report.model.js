@@ -1,23 +1,21 @@
-
-
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
 const reportSchema = new Schema({
-    username: {
+    timestamp: {
         type: String,
-        required: true,
         unique: true,
-    },
-    success: {
-        type: Boolean,
         required: true,
     },
-    time: {
-        type: Date,
+    connections: {
+        type: Number,
         required: true,
-    }   
+    },
+    transfers: {
+        type: Object,
+        required: true,
+    }
 }, {
     timestamps: true, 
 });

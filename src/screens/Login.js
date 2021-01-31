@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React from 'react';
 
-import clt from '../client';
-import User from '../img/icon/user.png';
+import makeClient from '../client';
 import Lock from '../img/icon/lock.png';
+import Server from '../img/icon/server.png';
+import User from '../img/icon/user.png';
 import { setClient, setLogin } from '../redux/action';
 import { store } from '../redux/store';
 
@@ -12,41 +13,83 @@ export default class Login extends React.Component {
     constructor() {
         super();
         this.state = {
+            dir: '',
             username: '',
             password: '',
+            prompt: '',
             repswd: '',
             signup: false,
         }
 
+        this.handleDir = this.handleDir.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePswd = this.handlePswd.bind(this);
+        this.handleRePswd = this.handleRePswd.bind(this);
     }
+
+    componentDidMount() {
+        const link = window.location.href;
+        const marker = link.lastIndexOf('/');
+        if (marker !== link.length - 1)
+            window.location.href = link.substring(0, marker);
+    }
+
+    handleDir = event => this.setState({ dir: event.target.value });
 
     handleEmail = event => this.setState({ username: event.target.value });
 
     handlePswd = event => this.setState({ password: event.target.value });
 
+    handleRePswd = event => this.setState({ repswd: event.target.value });
+
     login = () => {
-        axios.get('http://localhost:5000/accounts/')
-            .then(res => {
-                var account = res.data.filter(acc => acc.username === this.state.username)[0];
-                if (account !== undefined) {
-                    if (account.password === this.state.password) {
-                        store.dispatch(setLogin(account));
-                        store.dispatch(setClient(clt));
+        if (this.state.signup) {
+            if (this.state.repswd === this.state.password) {
+                axios.get('https://api.ipify.org?format=json').then(res => {
+                    console.log(res.data.ip);
+                    const data = {
+                        ip: res.data.ip,
+                        username: this.state.username,
+                        password: this.state.password,
+                        rootDir: this.state.dir,
                     }
-                }
-            });
+                    console.log(data);
+                    axios.post(`http://${window.location.hostname}:5000/accounts/add`, data)
+                        .then(
+                            res => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }), 
+                            res => this.setState({ prompt: "IP has already been registered" })
+                        );
+                });
+            }
+            else
+                this.setState({ prompt: 'Passwords Don\'t Match' });
+        }
+        else {
+            axios.get(`http://${window.location.hostname}:5000/accounts/`)
+                .then(res => {
+                    var account = res.data.filter(acc => acc.username === this.state.username)[0];
+                    if (account !== undefined) {
+                        if (account.password === this.state.password) {
+                            store.dispatch(setLogin(account));
+                            store.dispatch(setClient(makeClient()));
+                        }
+                        else
+                            this.setState({ prompt: 'Incorrect Password' });
+                    }
+                    else
+                        this.setState({ prompt: 'Account Not Registered' });
+                });
+        }
     }
+
+    signup = () => this.setState({ signup: true });
 
     render() {
         return (
             <div className='loginRoot'>
                 <div className='loginStrip'>
-                    <div style={{ height: '20vh' }} />
                     <p className='noselect loginText'>orion.</p>
                     <div style={{ height: '2vh' }} />
-
 
                     <p className='noselect loginInputLabel'>Username</p>
                     <div className='loginInputBox'>
@@ -58,11 +101,31 @@ export default class Login extends React.Component {
                         <img className='loginIcons' src={Lock} alt='logo' />
                         <input className='loginInput' type='password' placeholder='Type your password' onChange={this.handlePswd} />
                     </div>
-                    <div style={{ height: '6vh' }} />
+                    {this.state.signup && <>
+                        <p className='noselect loginInputLabel'>Retype Password</p>
+                        <div className='loginInputBox'>
+                            <img className='loginIcons' src={Lock} alt='logo' />
+                            <input className='loginInput' type='password' placeholder='Retype your password' onChange={this.handleRePswd} />
+                        </div>
+                        <p className='noselect loginInputLabel'>Raspberry PI Storage Root Directory</p>
+                        <div className='loginInputBox'>
+                            <img className='loginIcons' src={Server} alt='logo' />
+                            <input className='loginInput' type='text' placeholder='/your/directory/here' onChange={this.handleDir} />
+                        </div>
+                    </>}
+                    <div style={{ height: '3vh' }} />
 
-                    <button className='loginBtn' onClick={this.login}>
-                        <p>LOGIN</p>
+                    {this.state.prompt && <p>{this.state.prompt}</p>}
+                    <div style={{ height: '3vh' }} />
+
+                    <button className='loginBtns loginBtn' onClick={this.login}>
+                        <p>{this.state.signup ? 'CONFIRM' : 'LOGIN'}</p>
                     </button>
+                    {!this.state.signup && (window.location.href.startsWith('http://192.168') || window.location.href.startsWith('http://localhost')) &&
+                        <button className='loginBtns signupBtn' onClick={this.signup}>
+                            <p>SIGN UP</p>
+                        </button>
+                    }
                 </div>
             </div>
         )

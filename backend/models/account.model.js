@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -6,8 +5,8 @@ const Schema = mongoose.Schema;
 const accountSchema = new Schema({
     username: {
         type: String,
-        required: true,
         unique: true,
+        required: true,
     },
     password: {
         type: String,
@@ -15,7 +14,12 @@ const accountSchema = new Schema({
     },
     rootDir: {
         type: String,
+        required: true,
         default: '/' , 
+    },
+    deviceList: {
+        type: Array,
+        default: [],
     }
 }, {
     timestamps: true, 
