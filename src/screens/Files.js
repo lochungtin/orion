@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -6,7 +7,7 @@ import folder from '../img/folder.png';
 import chevL from '../img/left.png';
 import fileE from '../img/fileE.png'
 import fileF from '../img/fileF.png'
-import { fsBack, fsSetDetail, fsSetDir, fsSetSearch } from '../redux/action';
+import { fsBack, fsSetDetail, fsSetDir } from '../redux/action';
 import { store } from '../redux/store';
 
 import './css/files.css';
@@ -47,7 +48,7 @@ class Files extends React.Component {
         const text = event.target.value;
         if (text.length > 2)
             this.props.clt.send('srq' + JSON.stringify({ dir: this.props.fs.dir, text }));
-        else if (this.props.fs.search) 
+        else if (this.props.fs.search)
             this.props.clt.send('get' + this.props.fs.dir);
     }
 
@@ -64,7 +65,25 @@ class Files extends React.Component {
     make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
 
     rnKey = () => this.make() + this.make() + '-' + this.make();
-    
+
+    requestFile = () => {
+        axios.get(`http://${window.location.hostname}:42072${this.state.selection}`, { responseType: 'blob', timeout: 30000 })
+            .then(res => {
+                console.log(res);
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+                const link = document.createElement('a');
+                console.log(this.state.selection.substring(this.state.selection.lastIndexOf('/')));
+                link.href = url;
+                link.setAttribute('download', this.state.selection.substring(this.state.selection.lastIndexOf('/') + 1));
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                link.parentNode.removeChild(link);
+            })
+    }
+
     select = select => {
         const selected = this.props.fs.dir + '/' + select;
         if (this.state.selection === selected)
@@ -143,7 +162,7 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileMoreInfo'>
-                        {this.state.selection && <>
+                        {this.state.selection && <div>
                             <img className='fileInfoPic' src={fileF} alt='file' />
                             <div className='fileInfoContainer'>
                                 <p>Size: </p>
@@ -161,7 +180,12 @@ class Files extends React.Component {
                                 <p>Path: </p>
                                 <p className='fileInfoText'>{this.props.fs.details.path}</p>
                             </div>
-                        </>}
+                        </div>}
+                        {this.state.selection &&
+                            <button onClick={this.requestFile}>
+                                <p>download</p>
+                            </button>
+                        }
                     </div>
                 </div>
             </div>

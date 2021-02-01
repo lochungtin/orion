@@ -56,7 +56,7 @@ export default class Login extends React.Component {
                         rootDir: this.state.dir,
                     }
                     console.log(data);
-                    axios.post(`http://${window.location.hostname}:5000/accounts/add`, data)
+                    axios.post(`http://${window.location.hostname}:42070/accounts/add`, data)
                         .then(
                             res => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }), 
                             res => this.setState({ prompt: "IP has already been registered" })
@@ -67,9 +67,10 @@ export default class Login extends React.Component {
                 this.setState({ prompt: 'Passwords Don\'t Match' });
         }
         else {
-            axios.get(`http://${window.location.hostname}:5000/accounts/`)
+            axios.get(`http://${window.location.hostname}:42070/accounts/`)
                 .then(res => {
-                    var account = res.data.filter(acc => acc.username === this.state.username)[0];
+                    console.log(res );
+                    const account = res.data.filter(acc => acc.username === this.state.username)[0];
                     if (account !== undefined) {
                         if (account.password === this.state.password) {
                             store.dispatch(setLogin(account));

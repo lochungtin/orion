@@ -1,14 +1,25 @@
 const webSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+const fsvr = require('./fileServer');
 
-const webSocketsServerPort = 8000;
 const server = http.createServer();
-server.listen(webSocketsServerPort);
+server.listen(42071);
+
+const logger = (text, ...args) => {
+    const splt = text.split('*');
+    let builder = '';
+    for (let i = 0; i < args.length; ++i)
+        builder += (splt[i] + args[i]);    
+    console.log(`[${new Date().toLocaleString()}] ${builder || text}`);
+}
 
 const wsServer = new webSocketServer({
     httpServer: server
 });
+fsvr.createFileServer(logger);
+logger('Socket Server is running on port: 42071');
+logger('File Server is running on port: 42072');
 
 const clients = {};
 const srcClients = {};
@@ -16,14 +27,14 @@ const srcClients = {};
 const make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
 const getUniqueID = () => make() + make() + "-" + make();
 
-wsServer.on('request', function (request) {
+wsServer.on('request', req => {
     const userID = getUniqueID();
-    const client = request.accept(null, request.origin);
+    const client = req.accept(null, req.origin);
     clients[userID] = client;
     client.on('message', msg => messageHandler(msg, client, userID));
     client.on('close', () => endConnection(userID));
 
-    logger('New client connection - UID: *@*', userID, request.origin);
+    logger('New client connection - UID: *@*', userID, req.origin);
     logger('General Connections No.: *', Object.keys(clients).length);
 });
 
@@ -91,13 +102,4 @@ const endConnection = userID => {
     logger('Client disconnected - UID: ', userID);
     logger('General Connections No.: *', Object.keys(clients).length);
     logger('Source Connections No.: *', Object.keys(clients).length);
-}
-
-const logger = (text, ...args) => {
-    const splt = text.split('*');
-    let builder = '';
-    for (let i = 0; i < args.length; ++i)
-        builder += (splt[i] + args[i]);
-
-    console.log(`[${new Date().toLocaleString()}] ${builder}`);
 }

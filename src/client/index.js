@@ -4,7 +4,7 @@ import { fsSetContent, fsSetDetail, fsSetSearch } from '../redux/action';
 import { store } from '../redux/store';
 
 const makeClient = ip => {
-    const clt = new W3CWebSocket(`ws://${ip}:8000`);
+    const clt = new W3CWebSocket(`ws://${ip}:42071`);
 
     clt.onmessage = message => {
         const cmd = message.data.slice(0, 3);

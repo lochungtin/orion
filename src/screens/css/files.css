@@ -135,7 +135,7 @@
     flex-direction: column;
     background-color:#1f1f33;
     height: 90vh;
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 20vw;
 }
 
@@ -156,3 +156,4 @@
     overflow-wrap: break-word;
     width: 13vw;
 }
+
