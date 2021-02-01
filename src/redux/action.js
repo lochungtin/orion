@@ -1,3 +1,5 @@
+// FILE SYSTEM RELATED ACTIONS
+
 export const FS_BACK = 'FS_BACK';
 export const fsBack = () => ({
     type: FS_BACK,
@@ -21,11 +23,26 @@ export const fsSetDir = payload => ({
     payload,
 });
 
+export const FS_SET_HIDDEN = 'FS_SET_HIDDEN';
+export const fsSetHidden = payload => ({
+    type: FS_SET_HIDDEN,
+    payload,
+});
+
 export const FS_SET_SEARCH = 'FS_SET_SEARCH';
 export const fsSetSearch = payload => ({
     type: FS_SET_SEARCH,
     payload,
 });
+
+export const FS_SET_SELECTION = 'FS_SET_SELECTION';
+export const fsSetSelection = payload => ({
+    type: FS_SET_SELECTION,
+    payload,
+});
+
+
+// LOGIN / SOCKET CLIENT RELATED ACTIONS
 
 export const SET_CLIENT = 'SET_CLIENT';
 export const setClient = payload => ({

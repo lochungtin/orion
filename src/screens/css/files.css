@@ -139,6 +139,13 @@
     width: 20vw;
 }
 
+.fileTextInfo {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+}
+
 .fileInfoPic {
     margin-top: 10vh;
     margin-bottom: 5vh;
@@ -155,5 +162,24 @@
 .fileInfoText {
     overflow-wrap: break-word;
     width: 13vw;
+}
+
+.fileDownloadBtnContainer {
+    align-items: center;
+    display: flex;
+    height: 15vh;
+}
+
+.fileDownloadBtn {
+    align-items: center;
+    background-color: #e6b329;
+    border: 0;
+    border-radius: 2vh;
+    display: flex;
+    height: 4vh;
+    justify-content: center;
+    margin-top: 2vh;
+    outline: none !important;
+    width: 35ch;
 }
 

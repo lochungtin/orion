@@ -7,7 +7,7 @@ import folder from '../img/folder.png';
 import chevL from '../img/left.png';
 import fileE from '../img/fileE.png'
 import fileF from '../img/fileF.png'
-import { fsBack, fsSetDetail, fsSetDir } from '../redux/action';
+import { fsBack, fsSetDetail, fsSetDir, fsSetHidden, fsSetSearch, fsSetSelection, } from '../redux/action';
 import { store } from '../redux/store';
 
 import './css/files.css';
@@ -16,19 +16,18 @@ class Files extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            hidden: false,
-            searchMode: false,
-            selection: '',
-            text: '',
-        }
 
         this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
-        this.props.clt.send('get' + this.props.acc.rootDir);
-        store.dispatch(fsSetDir(this.props.acc.rootDir));
+        const dir = this.props.fs.dir || this.props.acc.rootDir
+        store.dispatch(fsSetDir(dir));
+        if (this.props.fs.search)
+            this.props.clt.send('srq' + JSON.stringify({ dir, text: this.props.fs.search }));
+        else
+            this.props.clt.send('get' + dir);
+
     }
 
     append = folder => this.props.fs.dir + '/' + folder;
@@ -48,7 +47,7 @@ class Files extends React.Component {
 
     handleSearch = event => {
         const text = event.target.value;
-        this.setState({ text });
+        store.dispatch(fsSetSearch(text));
         if (text.length > 2)
             this.props.clt.send('srq' + JSON.stringify({ dir: this.props.fs.dir, text }));
         else
@@ -65,18 +64,20 @@ class Files extends React.Component {
         return this.props.acc.rootDir;
     }
 
+    getFileName = path => path.substring(path.lastIndexOf('/') + 1);
+
     make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
 
     rnKey = () => this.make() + this.make() + '-' + this.make();
 
     requestFile = () => {
-        axios.get(`http://${window.location.hostname}:42072${this.state.selection}`, { responseType: 'blob', timeout: 30000 })
+        axios.get(`http://${window.location.hostname}:42072${this.props.fs.select}`, { responseType: 'blob', timeout: 30000 })
             .then(res => {
                 const url = window.URL.createObjectURL(new Blob([res.data]));
                 const link = document.createElement('a');
 
                 link.href = url;
-                link.setAttribute('download', this.state.selection.substring(this.state.selection.lastIndexOf('/') + 1));
+                link.setAttribute('download', this.getFileName(this.props.fs.select));
 
                 document.body.appendChild(link);
 
@@ -88,11 +89,13 @@ class Files extends React.Component {
 
     select = select => {
         const selected = this.props.fs.dir + '/' + select;
-        if (this.state.selection === selected)
+        if (this.props.fs.select === selected) {
             store.dispatch(fsSetDetail({}));
+            store.dispatch(fsSetSelection(''));
+        }
         else {
             this.props.clt.send('dtl' + selected);
-            this.setState({ selection: selected });
+            store.dispatch(fsSetSelection(selected));
         }
     }
 
@@ -100,9 +103,7 @@ class Files extends React.Component {
 
     sizeR = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
 
-    tFocus = v => this.setState({ searchMode: v });
-
-    tHidden = () => this.setState({ hidden: !this.state.hidden });
+    tHidden = () => store.dispatch(fsSetHidden(!this.props.fs.hidden));
 
     render() {
         return (
@@ -121,22 +122,20 @@ class Files extends React.Component {
                         })}
                     </div>
                     <div className='fileOptionBar'>
-                        <ToggleSwitch checked={this.state.checked} text={this.state.searchMode ? '' : 'Hidden'} toggle={this.tHidden} />
+                        <ToggleSwitch checked={this.props.fs.hidden} text={this.props.fs.search ? '' : 'Hidden'} toggle={this.tHidden} />
                         <input
                             className='fileSearchbarInput'
-                            onFocus={() => this.tFocus(true)}
-                            onBlur={() => this.tFocus(false)}
                             onChange={this.handleSearch}
                             placeholder='search ...'
                             type='text'
-                            value={this.state.text}
+                            value={this.props.fs.search}
                         />
                     </div>
                 </div>
                 <div className='fileContent'>
                     <div className='fileFolders'>
                         {this.props.fs.content.dirs
-                            .filter(d => !d.startsWith('.') || this.state.hidden)
+                            .filter(d => !d.startsWith('.') || this.props.fs.hidden)
                             .sort((a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.'))
                             .map(d => {
                                 return (
@@ -151,13 +150,13 @@ class Files extends React.Component {
                     </div>
                     <div className='fileFiles'>
                         {this.props.fs.content.files
-                            .filter(d => !d.startsWith('.') || this.state.hidden)
+                            .filter(d => !d.startsWith('.') || this.props.fs.hidden)
                             .sort(this.sortHidden)
                             .map(f => {
                                 return (
                                     <button onClick={() => this.select(f)} key={this.rnKey()}>
                                         <div className='fileFolder noselect'>
-                                            <img className='fileFileImg' src={this.state.selection.includes(this.props.fs.dir + '/' + f) ? fileF : fileE} alt='file' />
+                                            <img className='fileFileImg' src={this.props.fs.select === (this.props.fs.dir + '/' + f) ? fileF : fileE} alt='file' />
                                             <p className='fileItemText'>{f}</p>
                                         </div>
                                     </button>
@@ -165,8 +164,12 @@ class Files extends React.Component {
                             })}
                     </div>
                     <div className='fileMoreInfo'>
-                        {this.state.selection && <div>
+                        {this.props.fs.select && <div className='fileTextInfo'>
                             <img className='fileInfoPic' src={fileF} alt='file' />
+                            <div className='fileInfoContainer'>
+                                <p>Name: </p>
+                                <p className='fileInfoText'>{this.props.fs.details.path ? this.getFileName(this.props.fs.select) : ''}</p>
+                            </div>
                             <div className='fileInfoContainer'>
                                 <p>Size: </p>
                                 <p className='fileInfoText'>{this.props.fs.details.size ? this.size(this.props.fs.details.size) : ''}</p>
@@ -184,10 +187,12 @@ class Files extends React.Component {
                                 <p className='fileInfoText'>{this.props.fs.details.path}</p>
                             </div>
                         </div>}
-                        {this.state.selection &&
-                            <button onClick={this.requestFile}>
-                                <p>download</p>
-                            </button>
+                        {this.props.fs.select &&
+                            <div className='fileDownloadBtnContainer'>
+                                <button className='fileDownloadBtn' onClick={this.requestFile}>
+                                    <p>download</p>
+                                </button>
+                            </div>
                         }
                     </div>
                 </div>

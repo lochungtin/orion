@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
+import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -26,7 +26,10 @@ const fsInit = {
         dirs: [],
         files: [],
     },
+    hidden: false,
     stack: [],
+    search: '',
+    select: '',
 }
 const fs = (data = fsInit, action) => {
     var update = { ...data };
@@ -37,16 +40,30 @@ const fs = (data = fsInit, action) => {
                 update.dir = update.stack[update.stack.length - 1];
             }
             return update;
+
         case FS_SET_CONTENT:
             update.content = action.payload;
-            update.search = false;
             return update;
+
         case FS_SET_DETAIL:
             update.details = action.payload;
             return update;
+
         case FS_SET_DIR:
             update.dir = action.payload;
             update.stack.push(action.payload);
+            return update;
+
+        case FS_SET_HIDDEN:
+            update.hidden = action.payload;
+            return update;
+
+        case FS_SET_SEARCH:
+            update.search = action.payload;
+            return update;
+
+        case FS_SET_SELECTION:
+            update.select = action.payload;
             return update;
     }
     return data;
