@@ -18,7 +18,7 @@ const makeClient = ip => {
                 store.dispatch(fsSetDetail(JSON.parse(payload)));
                 break;
             case 'sre':
-                store.dispatch(fsSetSearch(JSON.parse(payload).result));
+                store.dispatch(fsSetContent(JSON.parse(payload)));
                 break;
         }
     }

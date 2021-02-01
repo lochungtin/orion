@@ -12,7 +12,7 @@ const createFileServer = (logger) => {
         const pathname = decodeURI(parseURL.pathname);
         const ext = path.parse(pathname).ext.toLowerCase();
 
-        const map = {
+        const exts = {
             '.ico': 'image/x-icon',
             '.html': 'text/html',
             '.js': 'text/javascript',
@@ -29,7 +29,7 @@ const createFileServer = (logger) => {
         };
 
         fs.readFile(pathname, (err, data) => {
-            res.setHeader('Content-type', map[ext] || 'text/plain');
+            res.setHeader('Content-type', exts[ext] || 'text/plain');
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.end(data);
         });

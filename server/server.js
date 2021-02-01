@@ -64,18 +64,21 @@ const messageHandler = (data, client, userID) => {
             break;
         case 'srq':
             // receive search request of dir
-            client.send('sre' + JSON.stringify(getSearch(payload)));
+            const obj = JSON.parse(payload);
+            client.send('sre' + JSON.stringify(getDir(obj.dir, n => n.startsWith(obj.text))));
             break;
     }
 }
 
-const getDir = dir => {
+const getDir = (dir, fn = n => true) => {
     const content = {
         dirs: [],
         files: [],
     };
 
-    fs.readdirSync(dir).forEach(n => content[fs.statSync(dir + '/' + n).isDirectory() ? 'dirs' : 'files'].push(n));
+    fs.readdirSync(dir)
+        .filter(fn)
+        .forEach(n => content[fs.statSync(dir + '/' + n).isDirectory() ? 'dirs' : 'files'].push(n));
 
     return content;
 }
@@ -86,13 +89,6 @@ const getDetails = path => {
         path: path,
         mTime: f.mtime,
         size: f.size
-    };
-}
-
-const getSearch = payload => {
-    const obj = JSON.parse(payload);
-    return {
-        result: fs.readdirSync(obj.dir).filter(n => fs.statSync(obj.dir + '/' + n).isFile() && n.startsWith(obj.text))
     };
 }
 

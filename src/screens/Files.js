@@ -48,7 +48,7 @@ class Files extends React.Component {
         const text = event.target.value;
         if (text.length > 2)
             this.props.clt.send('srq' + JSON.stringify({ dir: this.props.fs.dir, text }));
-        else if (this.props.fs.search)
+        else
             this.props.clt.send('get' + this.props.fs.dir);
     }
 
@@ -69,10 +69,9 @@ class Files extends React.Component {
     requestFile = () => {
         axios.get(`http://${window.location.hostname}:42072${this.state.selection}`, { responseType: 'blob', timeout: 30000 })
             .then(res => {
-                console.log(res);
                 const url = window.URL.createObjectURL(new Blob([res.data]));
                 const link = document.createElement('a');
-                console.log(this.state.selection.substring(this.state.selection.lastIndexOf('/')));
+
                 link.href = url;
                 link.setAttribute('download', this.state.selection.substring(this.state.selection.lastIndexOf('/') + 1));
 
@@ -131,7 +130,7 @@ class Files extends React.Component {
                     </div>
                 </div>
                 <div className='fileContent'>
-                    {!this.props.fs.search && <div className='fileFolders'>
+                    <div className='fileFolders'>
                         {this.props.fs.content.dirs
                             .filter(d => !d.startsWith('.') || this.state.hidden)
                             .sort((a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.'))
@@ -145,7 +144,7 @@ class Files extends React.Component {
                                     </button>
                                 );
                             })}
-                    </div>}
+                    </div>
                     <div className='fileFiles'>
                         {this.props.fs.content.files
                             .filter(d => !d.startsWith('.') || this.state.hidden)

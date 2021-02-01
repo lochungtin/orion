@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_SEARCH, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
+import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -26,7 +26,6 @@ const fsInit = {
         dirs: [],
         files: [],
     },
-    search: false,
     stack: [],
 }
 const fs = (data = fsInit, action) => {
@@ -48,10 +47,6 @@ const fs = (data = fsInit, action) => {
         case FS_SET_DIR:
             update.dir = action.payload;
             update.stack.push(action.payload);
-            return update;
-        case FS_SET_SEARCH:
-            update.content.files = action.payload;
-            update.search = true;
             return update;
     }
     return data;
