@@ -1,0 +1,58 @@
+.dashTopbar{
+    align-items: center;
+    display: flex;
+    height: 15vh;
+    justify-content: space-between;
+}
+
+.dashMain {
+    align-items: flex-start;
+    display: flex;
+    height: 85vh;
+    justify-content: space-between;
+}
+
+.dashMainLeft {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    justify-content: space-between;
+    width: 50vw;
+}
+
+.dashCard {
+    align-items: center;
+    border: 1px solid orange;
+    display: flex;
+}
+
+.dashTopLeftCard {
+    height: 10vh;
+    margin-left: 3.75vw;
+    width: 30vw;
+}
+
+.dashTopRightCard {
+    height: 10vh;
+    margin-right: 3.75vw;
+    width: 45vw;
+}
+
+.dashLeftCard {
+    height: 15vh;
+    margin-bottom: 3.75vh;
+    width: 42.5vw;
+}
+
+.dashReportCard {
+    height: 40vh;
+    margin-bottom: 3.75vh;
+    width: 42.5vw;
+}
+
+.dashRightCard {
+    height: 81vh;
+    margin-right: 3.75vw;
+    width: 31vw;
+}

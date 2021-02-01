@@ -164,7 +164,7 @@ class Files extends React.Component {
                     </div>
                     <div className='fileMoreInfo'>
                         {this.props.fs.select && <div className='fileTextInfo'>
-                            <img className='fileInfoPic' src={fileF} alt='file' />
+                            <img className='fileInfoPic' src={fileE} alt='file' />
                             <div className='fileInfoContainer'>
                                 <p>Name: </p>
                                 <p className='fileInfoText'>{this.props.fs.details.path ? this.getFileName(this.props.fs.select) : ''}</p>
