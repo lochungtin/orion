@@ -65,7 +65,7 @@ const messageHandler = (data, client, userID) => {
         case 'srq':
             // receive search request of dir
             const obj = JSON.parse(payload);
-            client.send('sre' + JSON.stringify(getDir(obj.dir, n => n.startsWith(obj.text))));
+            client.send('sre' + JSON.stringify(getDir(obj.dir, n => n.toLowerCase().includes(obj.text.toLowerCase()))));
             break;
     }
 }

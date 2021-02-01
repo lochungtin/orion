@@ -20,6 +20,7 @@ class Files extends React.Component {
             hidden: false,
             searchMode: false,
             selection: '',
+            text: '',
         }
 
         this.handleSearch = this.handleSearch.bind(this);
@@ -42,10 +43,12 @@ class Files extends React.Component {
     goto = dir => {
         store.dispatch(fsSetDir(dir));
         this.props.clt.send('get' + dir);
+        this.setState({ text: '' });
     }
 
     handleSearch = event => {
         const text = event.target.value;
+        this.setState({ text });
         if (text.length > 2)
             this.props.clt.send('srq' + JSON.stringify({ dir: this.props.fs.dir, text }));
         else
@@ -126,6 +129,7 @@ class Files extends React.Component {
                             onChange={this.handleSearch}
                             placeholder='search ...'
                             type='text'
+                            value={this.state.text}
                         />
                     </div>
                 </div>
