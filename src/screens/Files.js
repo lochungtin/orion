@@ -27,7 +27,6 @@ class Files extends React.Component {
             this.props.clt.send('srq' + JSON.stringify({ dir, text: this.props.fs.search }));
         else
             this.props.clt.send('get' + dir);
-
     }
 
     append = folder => this.props.fs.dir + '/' + folder;
@@ -116,7 +115,7 @@ class Files extends React.Component {
                         {this.props.fs.dir.split('/').filter(t => t !== '').map(t => {
                             return (
                                 <button onClick={() => this.goto(this.jump(t))} key={t}>
-                                    <p className='fileDirBarText noselect'>{'/ ' + t}</p>
+                                    <p className='fileDirBarText noselect'>{'/' + t}</p>
                                 </button>
                             );
                         })}
