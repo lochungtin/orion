@@ -12,6 +12,7 @@ router.route('/add').post((req, res) => {
     const newDevice = new Device({ 
         name: req.body.username,
         rootDir: req.body.rootDir,
+        uid: req.body.uid,
     });
 
     newDevice.save()

@@ -107,11 +107,11 @@ class Files extends React.Component {
     render() {
         return (
             <div>
-                <div className='fileTop'>
+                <div className='row fileTop'>
                     <button className='fileNavBtn' onClick={this.back}>
                         <img className='fileNavImg' src={chevL} />
                     </button>
-                    <div className='fileDirBar'>
+                    <div className='row fileDirBar' style={{ justifyContent: 'flex-start' }}>
                         {this.props.fs.dir.split('/').filter(t => t !== '').map(t => {
                             return (
                                 <button onClick={() => this.goto(this.jump(t))} key={t}>
@@ -120,7 +120,7 @@ class Files extends React.Component {
                             );
                         })}
                     </div>
-                    <div className='fileOptionBar'>
+                    <div className='row fileOptionBar'>
                         <ToggleSwitch checked={this.props.fs.hidden} text={this.props.fs.search ? '' : 'Hidden'} toggle={this.tHidden} />
                         <input
                             className='fileSearchbarInput'
@@ -131,8 +131,8 @@ class Files extends React.Component {
                         />
                     </div>
                 </div>
-                <div className='fileContent'>
-                    <div className='fileFolders'>
+                <div className='row fileContent'>
+                    <div className='col fileFolders' style={{ justifyContent: 'flex-start' }}>
                         {this.props.fs.content.dirs
                             .filter(d => !d.startsWith('.') || this.props.fs.hidden)
                             .sort((a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.'))
@@ -147,7 +147,7 @@ class Files extends React.Component {
                                 );
                             })}
                     </div>
-                    <div className='fileFiles'>
+                    <div className='col fileFiles' style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
                         {this.props.fs.content.files
                             .filter(d => !d.startsWith('.') || this.props.fs.hidden)
                             .sort(this.sortHidden)
@@ -162,37 +162,37 @@ class Files extends React.Component {
                                 );
                             })}
                     </div>
-                    <div className='fileMoreInfo'>
-                        {this.props.fs.select && <div className='fileTextInfo'>
-                            <img className='fileInfoPic' src={fileE} alt='file' />
-                            <div className='fileInfoContainer'>
-                                <p>Name: </p>
-                                <p className='fileInfoText'>{this.props.fs.details.path ? this.getFileName(this.props.fs.select) : ''}</p>
+                    <div className='col fileMoreInfo'>
+                        {this.props.fs.select && <>
+                            <div className='col fileTextInfo'>
+                                <img className='fileInfoPic' src={fileE} alt='file' />
+                                <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
+                                    <p>Name: </p>
+                                    <p className='fileInfoText'>{this.props.fs.details.path ? this.getFileName(this.props.fs.select) : ''}</p>
+                                </div>
+                                <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
+                                    <p>Size: </p>
+                                    <p className='fileInfoText'>{this.props.fs.details.size ? this.size(this.props.fs.details.size) : ''}</p>
+                                </div>
+                                <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
+                                    <p>L.M. Date: </p>
+                                    <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleDateString() : ''}</p>
+                                </div>
+                                <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
+                                    <p>L.M. Time: </p>
+                                    <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleTimeString() : ''}</p>
+                                </div>
+                                <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
+                                    <p>Path: </p>
+                                    <p className='fileInfoText'>{this.props.fs.details.path}</p>
+                                </div>
                             </div>
-                            <div className='fileInfoContainer'>
-                                <p>Size: </p>
-                                <p className='fileInfoText'>{this.props.fs.details.size ? this.size(this.props.fs.details.size) : ''}</p>
-                            </div>
-                            <div className='fileInfoContainer'>
-                                <p>L.M. Date: </p>
-                                <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleDateString() : ''}</p>
-                            </div>
-                            <div className='fileInfoContainer'>
-                                <p>L.M. Time: </p>
-                                <p className='fileInfoText'>{this.props.fs.details.mTime ? new Date(this.props.fs.details.mTime).toLocaleTimeString() : ''}</p>
-                            </div>
-                            <div className='fileInfoContainer'>
-                                <p>Path: </p>
-                                <p className='fileInfoText'>{this.props.fs.details.path}</p>
-                            </div>
-                        </div>}
-                        {this.props.fs.select &&
-                            <div className='fileDownloadBtnContainer'>
-                                <button className='fileDownloadBtn' onClick={this.requestFile}>
+                            <div className='row fileDownloadBtnContainer'>
+                                <button className='row fileDownloadBtn' onClick={this.requestFile} style={{ justifyContent: 'center' }}>
                                     <p>download</p>
                                 </button>
                             </div>
-                        }
+                        </>}
                     </div>
                 </div>
             </div>

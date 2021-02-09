@@ -48,19 +48,14 @@ export default class Login extends React.Component {
         if (this.state.signup) {
             if (this.state.repswd === this.state.password) {
                 axios.get('https://api.ipify.org?format=json').then(res => {
-                    console.log(res.data.ip);
-                    const data = {
-                        ip: res.data.ip,
+                    axios.post(`http://${window.location.hostname}:42070/accounts/add`, {
                         username: this.state.username,
                         password: this.state.password,
                         rootDir: this.state.dir,
-                    }
-                    console.log(data);
-                    axios.post(`http://${window.location.hostname}:42070/accounts/add`, data)
-                        .then(
-                            res => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }), 
-                            res => this.setState({ prompt: "IP has already been registered" })
-                        );
+                    }).then(
+                        res => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }),
+                        res => this.setState({ prompt: "IP has already been registered" })
+                    );
                 });
             }
             else
@@ -69,7 +64,6 @@ export default class Login extends React.Component {
         else {
             axios.get(`http://${window.location.hostname}:42070/accounts/`)
                 .then(res => {
-                    console.log(res );
                     const account = res.data.filter(acc => acc.username === this.state.username)[0];
                     if (account !== undefined) {
                         if (account.password === this.state.password) {

@@ -15,12 +15,7 @@ const accountSchema = new Schema({
     rootDir: {
         type: String,
         required: true,
-        default: '/' , 
     },
-    deviceList: {
-        type: Array,
-        default: [],
-    }
 }, {
     timestamps: true, 
 });

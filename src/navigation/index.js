@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 import SidebarBtn from '../components/SidebarBtn';
 import Dashboard from '../screens/Dashboard';
 import Files from '../screens/Files';
-import History from '../screens/History';
 import Login from '../screens/Login';
 import Settings from '../screens/Settings';
 import { setLogout } from '../redux/action';
 import { store } from '../redux/store';
 
 class AppNav extends React.Component {
-    
+
     logout = () => {
         this.props.clt.close();
         store.dispatch(setLogout());
@@ -27,17 +26,16 @@ class AppNav extends React.Component {
                     </div> :
                     <Router>
                         <div className='root'>
-                            <nav>
-                                <div className='sidebarEnds'>
-                                    <p className='sidebarCornerText'>orion.</p>
+                            <nav className='col'>
+                                <div className='row sidebarEnds'>
+                                    <p className='sidebarCornerText noselect'>orion.</p>
                                 </div>
-                                <div className='sidebarBtns'>
+                                <div className='col sidebarBtns' style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
                                     <SidebarBtn text={'dashboard'} />
                                     <SidebarBtn text={'files'} />
-                                    <SidebarBtn text={'history'} />
                                     <SidebarBtn text={'settings'} />
                                 </div>
-                                <div className='sidebarEnds'>
+                                <div className='row sidebarEnds'>
                                     <button className='logoutBtn' onClick={this.logout}>
                                         <p>logout</p>
                                     </button>
@@ -53,7 +51,6 @@ class AppNav extends React.Component {
                                 <div className='content'>
                                     <Route exact path='/dashboard' component={Dashboard} />
                                     <Route exact path='/files' component={Files} />
-                                    <Route exact path='/history' component={History} />
                                     <Route exact path='/settings' component={Settings} />
                                 </div>
                             </Switch>

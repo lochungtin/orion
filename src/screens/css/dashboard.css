@@ -1,58 +1,74 @@
+.dashRoot {
+    width: 85vw;
+}
+
+.dashContent {
+    width: 65vw;
+}
+
 .dashTopbar{
-    align-items: center;
-    display: flex;
     height: 15vh;
-    justify-content: space-between;
-}
-
-.dashMain {
-    align-items: flex-start;
-    display: flex;
-    height: 85vh;
-    justify-content: space-between;
-}
-
-.dashMainLeft {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 85vh;
-    justify-content: space-between;
-    width: 50vw;
+    padding-left: 3vw;
+    padding-right: 3vw;
 }
 
 .dashCard {
     align-items: center;
-    border: 1px solid orange;
+    background-color: #262638;
+    border-radius: 2ch;
     display: flex;
 }
 
 .dashTopLeftCard {
     height: 10vh;
-    margin-left: 3.75vw;
-    width: 30vw;
+    width: 23vw;
 }
 
 .dashTopRightCard {
     height: 10vh;
-    margin-right: 3.75vw;
-    width: 45vw;
+    justify-content: center;
+    width: 32vw;
+}
+
+.dashMain {
+    height: 80vh;
+    padding-left: 3vw;
+    padding-right: 3vw;
+}
+
+.dashMainLeft {
+    height: 75vh;
+    width: 30vw;
 }
 
 .dashLeftCard {
-    height: 15vh;
-    margin-bottom: 3.75vh;
-    width: 42.5vw;
+    height: 8vh;
+    width: 30vw;
+}
+
+.timeSinceText {
+    font-size: 2ch;
 }
 
 .dashReportCard {
     height: 40vh;
-    margin-bottom: 3.75vh;
-    width: 42.5vw;
+    width: 30vw;
 }
 
 .dashRightCard {
-    height: 81vh;
-    margin-right: 3.75vw;
-    width: 31vw;
+    height: 75vh;
+    width: 25vw;
 }
+
+.bottomIndicator {
+    background-color: #262638;
+    height: 5vh;
+    width: 85vw;
+}
+
+.dashDetail {
+    background-color:#1f1f33;
+    height: 100vh;
+    width: 20vw;
+}
+

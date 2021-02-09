@@ -15,6 +15,10 @@ const deviceSchema = new Schema({
     rootDir: {
         type: String,
         required: true,
+    },
+    uid: {
+        type: String,
+        required: true,
     }
 }, {
     timestamps: true, 

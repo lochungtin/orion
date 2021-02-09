@@ -1,9 +1,5 @@
-
 .fileTop {
-    align-items: center;
-    display: flex;
     height: 10vh;
-    justify-content: space-between;
     padding-left: 1vw;
 }
 
@@ -18,10 +14,8 @@
 }
 
 .fileDirBar {
-    align-items: center;
     background-color: #29293d;
     border-radius: 3.5vh;
-    display: flex;
     height: 4vh;
     padding-left: 1vw;
     padding-right: 1vw;
@@ -54,10 +48,7 @@
 }
 
 .fileOptionBar {
-    align-items: center;
     background-color: #1f1f33;
-    display: flex;
-    justify-content: space-between;
     padding-left: 1vw;
     padding-right: 1vw;
     height: 10vh;
@@ -65,16 +56,10 @@
 }
 
 .fileContent {
-    align-items: center;
-    display: flex;
     height: 90vh;
 }
 
 .fileFolders {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     height: 90vh;
     overflow: scroll;
     width: 16vw;
@@ -106,11 +91,7 @@
 }
 
 .fileFiles {
-    align-items: flex-start;
-    display: flex;
     flex: 1;
-    flex-direction: column;
-    justify-content: flex-start;
     height: 90vh;
     overflow: scroll;
     padding-left: 1vw;
@@ -130,19 +111,12 @@
 }
 
 .fileMoreInfo {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    background-color:#1f1f33;
+    background-color: #1f1f33;
     height: 90vh;
-    justify-content: space-between;
     width: 20vw;
 }
 
 .fileTextInfo {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
     width: 20vw;
 }
 
@@ -152,9 +126,6 @@
 }
 
 .fileInfoContainer {
-    align-items: flex-start;
-    display: flex;
-    justify-content: space-between;
     margin-top: 2ch;
     width: 18vw;
 }
@@ -165,21 +136,15 @@
 }
 
 .fileDownloadBtnContainer {
-    align-items: center;
-    display: flex;
     height: 15vh;
 }
 
 .fileDownloadBtn {
-    align-items: center;
     background-color: #e6b329;
     border: 0;
     border-radius: 2vh;
-    display: flex;
     height: 4vh;
-    justify-content: center;
     margin-top: 2vh;
     outline: none !important;
     width: 35ch;
 }
-
