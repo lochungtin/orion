@@ -1,44 +1,60 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
+
+import refresh from '../img/icon/refresh.png';
 
 import './css/dashboard.css';
 
 class Dashboard extends React.Component {
-
-    constructor(props) {
-        super(props);
-        console.log(props.acc)
-    }
 
     render() {
         return (
             <div className='row dashRoot'>
                 <div className='dashContent'>
                     <div className='row dashTopbar'>
-                        <div className='row dashCard dashTopLeftCard'>
-                            <div className='col'>
-                                <p>Start Full System Sync</p>
-                                <p>Status: </p>
+                        <div className='row dashCard dashTopLeftCard' style={{ justifyContent: 'space-around' }}>
+                            <div className='col dashStartTextContainer' style={{ alignItems: 'flex-start' }}>
+                                <p className='dashStartText'>Start Full System Sync</p>
+                                <p>status: {this.props.bkup.status}</p>
                             </div>
-                            <p>Start Full System Sync</p>
+                            <button className='dashStartButton'>
+                                <img className='dashStartIcon' src={refresh} alt='start' />
+                            </button>
                         </div>
-                        <div className='dashCard dashTopRightCard'>
-                            <p className='timeSinceText'>time since last back up: 00:00:00:00</p>
+                        <div className='row dashCard dashTopRightCard' style={{ justifyContent: 'space-around' }}>
+                            <div className='col dashStartTextContainer' style={{ alignItems: 'flex-start' }}>
+                                <p className='dashStartText'>Selective Cloning</p>
+                                <p>status: {this.props.bkup.status}</p>
+                            </div>
+                            <div className='col'>
+                                <div className='row dashDeviceSelectContainer'>
+                                    <p>From: </p>
+                                    <select className='dashDeviceSelect'>
+
+                                    </select>
+                                </div>
+                                <div className='row dashDeviceSelectContainer'>
+                                    <p>To: </p>
+                                    <select className='dashDeviceSelect'>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <button className='dashStartButton'>
+                                <img className='dashStartIcon' src={refresh} alt='start' />
+                            </button>
                         </div>
                     </div>
                     <div className='row dashMain'>
                         <div className='col dashMainLeft'>
-                            <div className='dashCard dashLeftCard'>
-                                <p className='timeSinceText'>time since last back up: 00:00:00:00</p>
+                            <div className='col dashCard dashLeftCard' style={{ justifyContent: 'center' }}>
+                                <p className='dashTimeSinceText'>time since last backup: </p>
+                                <p className='dashTimeSinceNum'>00:00:00:00</p>
                             </div>
                             <div className='dashCard dashLeftCard'>
-                                <p className='timeSinceText'>time since last back up: 00:00:00:00</p>
+                                <p className='timeSinceText'>time since last backup: 00:00:00:00</p>
                             </div>
-                            <div className='dashCard dashLeftCard'>
-
-                            </div>
-                            <div className='dashCard dashReportCard'>
+                            <div className='dashCard dashLeftBottomCard'>
 
                             </div>
                         </div>
@@ -60,6 +76,7 @@ class Dashboard extends React.Component {
 
 const mapStateToProps = state => ({
     acc: state.acc,
+    bkup: state.bkup,
 });
 
 export default connect(mapStateToProps)(Dashboard);

@@ -24,10 +24,42 @@
     width: 23vw;
 }
 
+.dashStartTextContainer {
+    
+}
+
+.dashStartText {
+    color: #e6b329;
+    font-size: 2ch;
+}
+
+.dashStartButton {
+    background-color: #1f1f33;
+    border-radius: 3ch;
+    height: 8ch;
+    width: 8ch;
+}
+
+.dashStartIcon {
+    height: 4ch;
+}
+
 .dashTopRightCard {
     height: 10vh;
-    justify-content: center;
-    width: 32vw;
+    width: 34vw;
+}
+
+.dashDeviceSelectContainer {
+    width: 11vw;
+}
+
+.dashDeviceSelect {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #e6b329;
+    color: #e0e0e0;
+    outline: none;
+    width: 8vw;
 }
 
 .dashMain {
@@ -42,16 +74,27 @@
 }
 
 .dashLeftCard {
-    height: 8vh;
+    height: 10vh;
     width: 30vw;
 }
 
-.timeSinceText {
+.dashTimeSinceText {
     font-size: 2ch;
+    text-align: left;
+    padding-left: 5vw;
+    width: inherit;
 }
 
-.dashReportCard {
-    height: 40vh;
+.dashTimeSinceNum {
+    color: #e6b329;
+    font-size: 3ch;
+    text-align: right;
+    padding-right: 5vw;
+    width: inherit;
+}
+
+.dashLeftBottomCard {
+    height: 45vh;
     width: 30vw;
 }
 

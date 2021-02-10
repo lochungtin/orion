@@ -39,7 +39,7 @@
     height: 4vh;
     padding-left: 1vw;
     outline: none;
-    width: 9vw;
+    width: 8vw;
 }
 
 .fileSearchbarInput:focus {
@@ -146,5 +146,5 @@
     height: 4vh;
     margin-top: 2vh;
     outline: none !important;
-    width: 35ch;
+    width: 10vw;
 }

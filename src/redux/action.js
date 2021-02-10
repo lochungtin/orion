@@ -23,6 +23,12 @@ export const fsSetDir = payload => ({
     payload,
 });
 
+export const FS_SET_FOCUS = 'FS_SET_FOCUS';
+export const fsSetFocus = payload => ({
+    type: FS_SET_FOCUS,
+    payload,
+});
+
 export const FS_SET_HIDDEN = 'FS_SET_HIDDEN';
 export const fsSetHidden = payload => ({
     type: FS_SET_HIDDEN,

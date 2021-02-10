@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
+import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_FOCUS, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -19,6 +19,14 @@ const clt = (clt = {}, action) => {
     return clt;
 }
 
+const bkupInit = {
+    status: '--/--'
+}
+const bkup = (bkup = bkupInit, action) => {
+    var update = { ...bkup };
+    return update;
+}
+
 const fsInit = {
     details: {},
     dir: '',
@@ -26,6 +34,7 @@ const fsInit = {
         dirs: [],
         files: [],
     },
+    focus: false,
     hidden: false,
     stack: [],
     search: '',
@@ -54,6 +63,10 @@ const fs = (data = fsInit, action) => {
             update.stack.push(action.payload);
             return update;
 
+        case FS_SET_FOCUS:
+            update.focus = action.payload;
+            return update;
+
         case FS_SET_HIDDEN:
             update.hidden = action.payload;
             return update;
@@ -71,6 +84,7 @@ const fs = (data = fsInit, action) => {
 
 export default combineReducers({
     acc: acc,
+    bkup: bkup,
     clt: clt,
     fs: fs,
 });

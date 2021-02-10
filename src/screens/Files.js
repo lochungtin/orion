@@ -3,11 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ToggleSwitch from '../components/ToggleSwitch';
-import folder from '../img/folder.png';
-import chevL from '../img/left.png';
-import fileE from '../img/fileE.png'
-import fileF from '../img/fileF.png'
-import { fsBack, fsSetDetail, fsSetDir, fsSetHidden, fsSetSearch, fsSetSelection, } from '../redux/action';
+import folder from '../img/icon/folder.png';
+import chevL from '../img/icon/left.png';
+import fileE from '../img/icon/fileE.png'
+import fileF from '../img/icon/fileF.png'
+import { fsBack, fsSetDetail, fsSetDir, fsSetFocus, fsSetHidden, fsSetSearch, fsSetSelection, } from '../redux/action';
 import { store } from '../redux/store';
 
 import './css/files.css';
@@ -16,7 +16,6 @@ class Files extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.handleSearch = this.handleSearch.bind(this);
     }
 
@@ -121,10 +120,12 @@ class Files extends React.Component {
                         })}
                     </div>
                     <div className='row fileOptionBar'>
-                        <ToggleSwitch checked={this.props.fs.hidden} text={this.props.fs.search ? '' : 'Hidden'} toggle={this.tHidden} />
+                        <ToggleSwitch checked={this.props.fs.hidden} text={this.props.fs.focus ? '' : 'Hidden'} toggle={this.tHidden} />
                         <input
                             className='fileSearchbarInput'
                             onChange={this.handleSearch}
+                            onFocus={() => store.dispatch(fsSetFocus(true))}
+                            onBlur={() => store.dispatch(fsSetFocus(false))}
                             placeholder='search ...'
                             type='text'
                             value={this.props.fs.search}

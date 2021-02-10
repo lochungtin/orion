@@ -26,6 +26,12 @@
     justify-content: space-between;
 }
 
+/* color invertion */
+
+.invert {
+    filter: invert(100);
+}
+
 /* sidebar styles */
 
 nav {
