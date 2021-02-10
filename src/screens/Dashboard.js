@@ -52,7 +52,8 @@ class Dashboard extends React.Component {
                                 <p className='dashTimeSinceNum'>00:00:00:00</p>
                             </div>
                             <div className='dashCard dashLeftCard'>
-                                <p className='timeSinceText'>time since last backup: 00:00:00:00</p>
+                                <p>{this.props.fs.stats.free}</p>
+                                <p>{this.props.fs.stats.size}</p>
                             </div>
                             <div className='dashCard dashLeftBottomCard'>
 
@@ -77,6 +78,7 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
     acc: state.acc,
     bkup: state.bkup,
+    fs: state.fs,
 });
 
 export default connect(mapStateToProps)(Dashboard);

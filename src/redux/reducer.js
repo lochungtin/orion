@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_FOCUS, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
+import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_FOCUS, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, FS_SET_STATS, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -39,6 +39,10 @@ const fsInit = {
     stack: [],
     search: '',
     select: '',
+    stats: {
+        free: 'calculating ...',
+        size: 'calculating ...',
+    }
 }
 const fs = (data = fsInit, action) => {
     var update = { ...data };
@@ -77,6 +81,10 @@ const fs = (data = fsInit, action) => {
 
         case FS_SET_SELECTION:
             update.select = action.payload;
+            return update;
+
+        case FS_SET_STATS:
+            update.stats = action.payload;
             return update;
     }
     return data;

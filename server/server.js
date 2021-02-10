@@ -1,6 +1,7 @@
 const webSocketServer = require('websocket').server;
 const http = require('http');
 const fs = require('fs');
+const checkDiskSpace = require('check-disk-space')
 const fsvr = require('./fileServer');
 
 const server = http.createServer();
@@ -66,6 +67,13 @@ const messageHandler = (data, client, userID) => {
             // receive search request of dir
             const obj = JSON.parse(payload);
             client.send('sre' + JSON.stringify(getDir(obj.dir, n => n.toLowerCase().includes(obj.text.toLowerCase()))));
+            break;
+        case 'dsk':
+            checkDiskSpace(payload).then((obj) => {
+                const res = JSON.stringify(obj);
+                client.send('dsk' + res);
+                logger('Disk Scan Complete - Returned: ', res);
+            });
             break;
     }
 }

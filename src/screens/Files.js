@@ -9,6 +9,8 @@ import fileE from '../img/icon/fileE.png'
 import fileF from '../img/icon/fileF.png'
 import { fsBack, fsSetDetail, fsSetDir, fsSetFocus, fsSetHidden, fsSetSearch, fsSetSelection, } from '../redux/action';
 import { store } from '../redux/store';
+import { size } from '../utils/size';
+import { rnKey } from '../utils/randomKey';
 
 import './css/files.css';
 
@@ -64,10 +66,6 @@ class Files extends React.Component {
 
     getFileName = path => path.substring(path.lastIndexOf('/') + 1);
 
-    make = () => Math.floor((1 + Math.random() * 0x10000)).toString(16);
-
-    rnKey = () => this.make() + this.make() + '-' + this.make();
-
     requestFile = () => {
         axios.get(`http://${window.location.hostname}:42072${this.props.fs.select}`, { responseType: 'blob', timeout: 30000 })
             .then(res => {
@@ -96,10 +94,6 @@ class Files extends React.Component {
             store.dispatch(fsSetSelection(selected));
         }
     }
-
-    size = bytes => Math.round(this.sizeR(bytes) * 100) / 100 + '' + ['B', 'KB', 'MB', 'GB'][Math.floor(Math.log(bytes) / Math.log(1024))];
-
-    sizeR = bytes => bytes / Math.pow(1024, Math.floor((Math.log(bytes) / Math.log(1024))));
 
     tHidden = () => store.dispatch(fsSetHidden(!this.props.fs.hidden));
 
@@ -139,7 +133,7 @@ class Files extends React.Component {
                             .sort((a, b) => a.substring(0, 1).indexOf('.') - b.substring(0, 1).indexOf('.'))
                             .map(d => {
                                 return (
-                                    <button onClick={() => this.goto(this.append(d))} key={this.rnKey()}>
+                                    <button onClick={() => this.goto(this.append(d))} key={rnKey()}>
                                         <div className='fileFolder noselect'>
                                             <img className='fileFolderImg' src={folder} alt='folder' />
                                             <p className='fileItemText'>{d.substring(0, 15) + (d.length > 15 ? '...' : '')}</p>
@@ -154,7 +148,7 @@ class Files extends React.Component {
                             .sort(this.sortHidden)
                             .map(f => {
                                 return (
-                                    <button onClick={() => this.select(f)} key={this.rnKey()}>
+                                    <button onClick={() => this.select(f)} key={rnKey()}>
                                         <div className='fileFolder noselect'>
                                             <img className='fileFileImg' src={this.props.fs.select === (this.props.fs.dir + '/' + f) ? fileF : fileE} alt='file' />
                                             <p className='fileItemText'>{f}</p>
@@ -173,7 +167,7 @@ class Files extends React.Component {
                                 </div>
                                 <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
                                     <p>Size: </p>
-                                    <p className='fileInfoText'>{this.props.fs.details.size ? this.size(this.props.fs.details.size) : ''}</p>
+                                    <p className='fileInfoText'>{this.props.fs.details.size ? size(this.props.fs.details.size) : ''}</p>
                                 </div>
                                 <div className='row fileInfoContainer' style={{ alignItems: 'flex-start' }}>
                                     <p>L.M. Date: </p>

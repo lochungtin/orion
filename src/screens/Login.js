@@ -68,7 +68,7 @@ export default class Login extends React.Component {
                     if (account !== undefined) {
                         if (account.password === this.state.password) {
                             store.dispatch(setLogin(account));
-                            store.dispatch(setClient(makeClient(window.location.hostname)));
+                            store.dispatch(setClient(makeClient(window.location.hostname, account)));
                         }
                         else
                             this.setState({ prompt: 'Incorrect Password' });

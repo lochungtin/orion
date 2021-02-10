@@ -47,6 +47,12 @@ export const fsSetSelection = payload => ({
     payload,
 });
 
+export const FS_SET_STATS = 'FS_SET_STATS';
+export const fsSetStats = payload => ({
+    type: FS_SET_STATS,
+    payload,
+})
+
 
 // LOGIN / SOCKET CLIENT RELATED ACTIONS
 
