@@ -1,7 +1,9 @@
+import { Line } from 'rc-progress';
 import React from 'react';
 import { connect } from 'react-redux';
 
 import refresh from '../img/icon/refresh.png';
+import { size } from '../utils/size';
 
 import './css/dashboard.css';
 
@@ -13,7 +15,7 @@ class Dashboard extends React.Component {
                 <div className='dashContent'>
                     <div className='row dashTopbar'>
                         <div className='row dashCard dashTopLeftCard' style={{ justifyContent: 'space-around' }}>
-                            <div className='col dashStartTextContainer' style={{ alignItems: 'flex-start' }}>
+                            <div className='col' style={{ alignItems: 'flex-start' }}>
                                 <p className='dashStartText'>Start Full System Sync</p>
                                 <p>status: {this.props.bkup.status}</p>
                             </div>
@@ -22,7 +24,7 @@ class Dashboard extends React.Component {
                             </button>
                         </div>
                         <div className='row dashCard dashTopRightCard' style={{ justifyContent: 'space-around' }}>
-                            <div className='col dashStartTextContainer' style={{ alignItems: 'flex-start' }}>
+                            <div className='col' style={{ alignItems: 'flex-start' }}>
                                 <p className='dashStartText'>Selective Cloning</p>
                                 <p>status: {this.props.bkup.status}</p>
                             </div>
@@ -47,28 +49,42 @@ class Dashboard extends React.Component {
                     </div>
                     <div className='row dashMain'>
                         <div className='col dashMainLeft'>
-                            <div className='col dashCard dashLeftCard' style={{ justifyContent: 'center' }}>
-                                <p className='dashTimeSinceText'>time since last backup: </p>
+                            <div className='col dashCard dashLeftTopCard' style={{ justifyContent: 'center' }}>
+                                <p className='dashLeftCardLabel'>time since last backup: </p>
                                 <p className='dashTimeSinceNum'>00:00:00:00</p>
                             </div>
-                            <div className='dashCard dashLeftCard'>
-                                <p>{this.props.fs.stats.free}</p>
-                                <p>{this.props.fs.stats.size}</p>
+                            <div className='col dashCard dashLeftMiddleCard' style={{ justifyContent: 'space-around' }}>
+                                <p className='dashLeftCardLabel'>drive usage and size: </p>
+                                <div className='dashProgress'>
+                                    <Line percent={(this.props.fs.stats.size - this.props.fs.stats.free) / this.props.fs.stats.size * 100} strokeWidth='2' strokeColor='#e6b329' />
+                                </div>
+                                <div className='row dashProgress'>
+                                    <p>{size(this.props.fs.stats.size - this.props.fs.stats.free)}</p>
+                                    <p> out of </p>
+                                    <p>{size(this.props.fs.stats.size)}</p>
+                                </div>
                             </div>
-                            <div className='dashCard dashLeftBottomCard'>
+                            <div className='col dashCard dashLeftBottomCard' style={{ justifyContent: 'space-around' }}>
+                                <p className='dashLeftCardLabel'>registered devices: </p>
+                                <div className='col dashDeviceList'>
 
+                                </div>
                             </div>
                         </div>
-                        <div className='dashCard dashRightCard'>
+                        <div className='col dashCard dashRightCard' style={{ justifyContent: 'space-around' }}>
+                            <p className='dashRightLabel'>Past Backup Reports</p>
+                            <div className='col dashReportList'>
 
+                            </div>
                         </div>
                     </div>
-                    <div className='bottomIndicator'>
-
+                    <div className='col dashIndicator'>
+                        <div className='dashIndicatorBar'>
+                            <Line percent='100' strokeWidth='1' strokeColor='#e6b329' />
+                        </div>
                     </div>
                 </div>
                 <div className='col dashDetail'>
-
                 </div>
             </div>
         );
