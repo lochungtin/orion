@@ -1,3 +1,17 @@
+// DEVICE RELATED ACTIONS
+
+export const DEV_ADD = 'DEV_ADD';
+export const devAdd = payload => ({
+    type: DEV_ADD,
+    payload,
+});
+
+export const DEV_RM = 'DEV_RM';
+export const devRm = payload => ({
+    type: DEV_RM,
+    payload,
+});
+
 // FILE SYSTEM RELATED ACTIONS
 
 export const FS_BACK = 'FS_BACK';
@@ -51,8 +65,7 @@ export const FS_SET_STATS = 'FS_SET_STATS';
 export const fsSetStats = payload => ({
     type: FS_SET_STATS,
     payload,
-})
-
+});
 
 // LOGIN / SOCKET CLIENT RELATED ACTIONS
 

@@ -103,6 +103,25 @@
     width: 30vw;
 }
 
+.dashLeftBottomLabelContainer {
+    width: 35vw;
+}
+
+.dashLeftCardLLabel {
+    font-size: 2ch;
+    padding-left: 5vw;
+}
+
+.dashLeftCardRLabel {
+    font-size: 2ch;
+    padding-right: 5vw;
+    text-align: right;
+}
+
+.dashPlusIcon {
+    width: 2ch;
+}
+
 .dashDeviceList {
     height: 35vh;
 }
@@ -134,5 +153,9 @@
     background-color:#1f1f33;
     height: 100vh;
     width: 20vw;
+}
+
+.dashAddDeviceContainer {
+    padding-top: 4vh;
 }
 

@@ -2,12 +2,38 @@ import { Line } from 'rc-progress';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import chevL from '../img/icon/left.png';
+import fileE from '../img/icon/fileE.png'
+import pc from '../img/icon/pc.png';
+import plus from '../img/icon/plus.png';
 import refresh from '../img/icon/refresh.png';
 import { size } from '../utils/size';
 
 import './css/dashboard.css';
 
 class Dashboard extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            detailMode: '',
+        }
+
+        this.handleDeviceName = this.handleDeviceName.bind(this);
+        this.handelDeviceRootDir = this.handelDeviceRootDir.bind(this);
+    }
+
+    addDevice = () => {
+
+    }
+
+    addDeviceMode = () => this.setState({ detailMode: 'dev' });
+
+    cancelDetail = () => this.setState({ detailMode: '' });
+
+    handleDeviceName = event => this.setState({ devName: event.target.value });
+
+    handelDeviceRootDir = event => this.setState({ devRootDir: event.target.value });
 
     render() {
         return (
@@ -65,7 +91,12 @@ class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <div className='col dashCard dashLeftBottomCard' style={{ justifyContent: 'space-around' }}>
-                                <p className='dashLeftCardLabel'>registered devices: </p>
+                                <div className='row dashLeftBottomLabelContainer'>
+                                    <p className='dashLeftCardLLabel'>registered devices: </p>
+                                    <button className='dashLeftCardRLabel' onClick={this.addDeviceMode}>
+                                        <img className='dashPlusIcon' src={plus} alt='btn' />
+                                    </button>
+                                </div>
                                 <div className='col dashDeviceList'>
 
                                 </div>
@@ -85,6 +116,32 @@ class Dashboard extends React.Component {
                     </div>
                 </div>
                 <div className='col dashDetail'>
+                    {this.state.detailMode === 'dev' &&
+                        <div className='col dashAddDeviceContainer'>
+                            <div style={{ width: '30ch' }}>
+                                <button className='fileNavBtn' onClick={this.cancelDetail}>
+                                    <img className='fileNavImg' src={chevL} />
+                                </button>
+                            </div>
+                            <div style={{ height: '14vh' }} />
+                            <img src={pc} alt='pc' />
+                            <div style={{ height: '4vh' }} />
+                            <p className='noselect loginInputLabel'>Device Name</p>
+                            <div className='loginInputBox'>
+                                <img className='loginIcons' src={pc} alt='logo' />
+                                <input className='loginInput' type='text' placeholder='New Device Name' onChange={this.handleDeviceName} />
+                            </div>
+                            <p className='noselect loginInputLabel'>Root Directory</p>
+                            <div className='loginInputBox'>
+                                <img className='loginIcons' src={fileE} alt='logo' />
+                                <input className='loginInput' type='text' placeholder='Device Root Directory' onChange={this.handelDeviceRootDir} />
+                            </div>
+                            <div style={{ height: '7vh' }} />
+                            <button className='loginBtns loginBtn' onClick={this.addDevice}>
+                                <p>add</p>
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
         );

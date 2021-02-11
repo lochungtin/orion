@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_FOCUS, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, FS_SET_STATS, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
+import { DEV_ADD, DEV_RM, FS_BACK, FS_SET_CONTENT, FS_SET_DETAIL, FS_SET_DIR, FS_SET_FOCUS, FS_SET_HIDDEN, FS_SET_SEARCH, FS_SET_SELECTION, FS_SET_STATS, SET_CLIENT, SET_LOGIN, SET_LOGOUT, } from './action';
 
 const acc = (acc = null, action) => {
     switch (action.type) {
@@ -44,8 +44,8 @@ const fsInit = {
         size: 'calculating ...',
     }
 }
-const fs = (data = fsInit, action) => {
-    var update = { ...data };
+const fs = (fs = fsInit, action) => {
+    var update = { ...fs };
     switch (action.type) {
         case FS_BACK:
             if (update.stack.length > 1) {
@@ -87,12 +87,27 @@ const fs = (data = fsInit, action) => {
             update.stats = action.payload;
             return update;
     }
-    return data;
+    return fs;
+}
+
+const dev = (dev = [], action) => {
+    var update = [ ...dev ];
+    switch (action.payload) {
+        case DEV_ADD:
+            update.push(action.payload);
+            return update;
+
+        case DEV_RM:
+            update.splice(update.indexOf(action.payload), 1);
+            return update;
+    }
+    return update;
 }
 
 export default combineReducers({
     acc: acc,
     bkup: bkup,
     clt: clt,
+    dev: dev,
     fs: fs,
 });

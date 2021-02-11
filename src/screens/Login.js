@@ -12,8 +12,8 @@ import './css/login.css';
 
 export default class Login extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             dir: '',
             username: '',
@@ -111,8 +111,8 @@ export default class Login extends React.Component {
                         </div>
                     </>}
                     <div style={{ height: '3vh' }} />
-
-                    {this.state.prompt && <p>{this.state.prompt}</p>}
+                    
+                    <p>{this.state.prompt}</p>
                     <div style={{ height: '3vh' }} />
 
                     <button className='loginBtns loginBtn' onClick={this.login}>
