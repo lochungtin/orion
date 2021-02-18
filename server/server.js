@@ -69,6 +69,7 @@ const messageHandler = (data, client, userID) => {
             client.send('sre' + JSON.stringify(getDir(obj.dir, n => n.toLowerCase().includes(obj.text.toLowerCase()))));
             break;
         case 'dsk':
+            // get disk info
             checkDiskSpace(payload).then((obj) => {
                 const res = JSON.stringify(obj);
                 client.send('dsk' + res);
