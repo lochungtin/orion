@@ -5,7 +5,7 @@ import makeClient from '../client';
 import Lock from '../img/icon/lock.png';
 import Server from '../img/icon/server.png';
 import User from '../img/icon/user.png';
-import { setClient, setLogin } from '../redux/action';
+import { setClient, setLogin, } from '../redux/action';
 import { store } from '../redux/store';
 
 import './css/login.css';
@@ -62,7 +62,7 @@ export default class Login extends React.Component {
             axios.get(`http://${window.location.hostname}:42070/accounts/`)
                 .then(res => {
                     const account = res.data.filter(acc => acc.username === this.state.username)[0];
-                    if (account !== undefined) {
+                    if (account) {
                         if (account.password === this.state.password) {
                             store.dispatch(setLogin(account));
                             store.dispatch(setClient(makeClient(window.location.hostname, account)));
