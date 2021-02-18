@@ -1,14 +1,8 @@
 // DEVICE RELATED ACTIONS
 
-export const DEV_ADD = 'DEV_ADD';
-export const devAdd = payload => ({
-    type: DEV_ADD,
-    payload,
-});
-
-export const DEV_RM = 'DEV_RM';
-export const devRm = payload => ({
-    type: DEV_RM,
+export const DEV_SET = 'DEV_SET';
+export const devSet = payload => ({
+    type: DEV_SET,
     payload,
 });
 

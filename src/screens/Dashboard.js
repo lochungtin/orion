@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Line } from 'rc-progress';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -7,6 +8,8 @@ import fileE from '../img/icon/fileE.png'
 import pc from '../img/icon/pc.png';
 import plus from '../img/icon/plus.png';
 import refresh from '../img/icon/refresh.png';
+import { store } from '../redux/store';
+import { devSet } from '../redux/action';
 import { size } from '../utils/size';
 
 import './css/dashboard.css';
@@ -17,19 +20,32 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             detailMode: '',
+            devName: '',
+            devRootDir: '',
+            prompt: '',
         }
 
         this.handleDeviceName = this.handleDeviceName.bind(this);
         this.handelDeviceRootDir = this.handelDeviceRootDir.bind(this);
+
+        axios.get(`http://${window.location.hostname}:42070/devices/`)
+            .then(res => store.dispatch(devSet(res.data.filter(dev => dev.uid === this.props.acc._id))));
     }
 
     addDevice = () => {
-
+        if (this.state.devName !== '')
+            axios.post(`http://${window.location.hostname}:42070/devices/add`, {
+                name: this.state.devName,
+                rootDir: this.state.devRootDir,
+                uid: this.props.acc._id,
+            })
+                .then(() => this.setState({ prompt: 'Device Added' }))
+                .catch(() => this.setState({ prompt: 'Failed To Add Device' }));
     }
 
     addDeviceMode = () => this.setState({ detailMode: 'dev' });
 
-    cancelDetail = () => this.setState({ detailMode: '' });
+    cancelDetail = () => this.setState({ detailMode: '', prompt: '' });
 
     handleDeviceName = event => this.setState({ devName: event.target.value });
 
@@ -98,7 +114,14 @@ class Dashboard extends React.Component {
                                     </button>
                                 </div>
                                 <div className='col dashDeviceList'>
-
+                                    {this.props.dev.map(dev => {
+                                        console.log(dev);
+                                        return (
+                                            <div>
+                                                <p>{dev.name}</p>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
@@ -136,7 +159,11 @@ class Dashboard extends React.Component {
                                 <img className='loginIcons' src={fileE} alt='logo' />
                                 <input className='loginInput' type='text' placeholder='Device Root Directory' onChange={this.handelDeviceRootDir} />
                             </div>
-                            <div style={{ height: '7vh' }} />
+                            <div style={{ height: '3vh' }} />
+
+                            <p>{this.state.prompt}</p>
+                            <div style={{ height: '3vh' }} />
+
                             <button className='loginBtns loginBtn' onClick={this.addDevice}>
                                 <p>add</p>
                             </button>
@@ -151,6 +178,7 @@ class Dashboard extends React.Component {
 const mapStateToProps = state => ({
     acc: state.acc,
     bkup: state.bkup,
+    dev: state.dev,
     fs: state.fs,
 });
 

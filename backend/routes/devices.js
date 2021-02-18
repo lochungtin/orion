@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 // add device
 router.route('/add').post((req, res) => {
     const newDevice = new Device({ 
-        name: req.body.username,
+        name: req.body.name,
         rootDir: req.body.rootDir,
         uid: req.body.uid,
     });

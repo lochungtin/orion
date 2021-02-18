@@ -47,16 +47,13 @@ export default class Login extends React.Component {
     login = () => {
         if (this.state.signup) {
             if (this.state.repswd === this.state.password) {
-                axios.get('https://api.ipify.org?format=json').then(res => {
-                    axios.post(`http://${window.location.hostname}:42070/accounts/add`, {
-                        username: this.state.username,
-                        password: this.state.password,
-                        rootDir: this.state.dir,
-                    }).then(
-                        res => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }),
-                        res => this.setState({ prompt: "IP has already been registered" })
-                    );
-                });
+                axios.post(`http://${window.location.hostname}:42070/accounts/add`, {
+                    username: this.state.username,
+                    password: this.state.password,
+                    rootDir: this.state.dir,
+                })
+                    .then(() => this.setState({ prompt: "Account Created - Login to Start Using", signup: false }))
+                    .catch(() => this.setState({ prompt: "Username already taken" }));
             }
             else
                 this.setState({ prompt: 'Passwords Don\'t Match' });
@@ -111,7 +108,7 @@ export default class Login extends React.Component {
                         </div>
                     </>}
                     <div style={{ height: '3vh' }} />
-                    
+
                     <p>{this.state.prompt}</p>
                     <div style={{ height: '3vh' }} />
 
