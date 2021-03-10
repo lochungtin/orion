@@ -82,29 +82,75 @@ export default class Login extends React.Component {
         return (
             <div className='loginRoot'>
                 <div className='loginStrip'>
-                    <p className='noselect loginText'>orion.</p>
+                    <p className='noselect loginText'>
+                        orion.
+                    </p>
                     <div style={{ height: '2vh' }} />
 
-                    <p className='noselect loginInputLabel'>Username</p>
+                    <p className='noselect loginInputLabel'>
+                        Username
+                    </p>
                     <div className='loginInputBox'>
-                        <img className='loginIcons' src={User} alt='logo' />
-                        <input className='loginInput' type='text' placeholder='Type your username' onChange={this.handleEmail} />
+                        <img
+                            alt='logo'
+                            className='loginIcons'
+                            src={User}
+                        />
+                        <input
+                            className='loginInput'
+                            onChange={this.handleEmail}
+                            placeholder='Type your username'
+                            type='text'
+                        />
                     </div>
-                    <p className='noselect loginInputLabel'>Password</p>
+                    <p className='noselect loginInputLabel'>
+                        Password
+                    </p>
                     <div className='loginInputBox'>
-                        <img className='loginIcons' src={Lock} alt='logo' />
-                        <input className='loginInput' type='password' placeholder='Type your password' onChange={this.handlePswd} />
+                        <img
+                            alt='logo'
+                            className='loginIcons'
+                            src={Lock}
+                        />
+                        <input
+                            className='loginInput'
+                            onChange={this.handlePswd}
+                            placeholder='Type your password'
+                            type='password'
+                        />
                     </div>
                     {this.state.signup && <>
-                        <p className='noselect loginInputLabel'>Retype Password</p>
+                        <p className='noselect loginInputLabel'>
+                            Retype Password
+                        </p>
                         <div className='loginInputBox'>
-                            <img className='loginIcons' src={Lock} alt='logo' />
-                            <input className='loginInput' type='password' placeholder='Retype your password' onChange={this.handleRePswd} />
+                            <img
+                                alt='logo'
+                                className='loginIcons'
+                                src={Lock}
+                            />
+                            <input
+                                className='loginInput'
+                                onChange={this.handleRePswd}
+                                placeholder='Retype your password'
+                                type='password'
+                            />
                         </div>
-                        <p className='noselect loginInputLabel'>Raspberry PI Storage Root Directory</p>
+                        <p className='noselect loginInputLabel'>
+                            Raspberry PI Storage Root Directory
+                        </p>
                         <div className='loginInputBox'>
-                            <img className='loginIcons' src={Server} alt='logo' />
-                            <input className='loginInput' type='text' placeholder='/your/directory/here' onChange={this.handleDir} />
+                            <img
+                                alt='logo'
+                                className='loginIcons'
+                                src={Server}
+                            />
+                            <input
+                                className='loginInput'
+                                onChange={this.handleDir}
+                                placeholder='/your/directory/here'
+                                type='text'
+                            />
                         </div>
                     </>}
                     <div style={{ height: '3vh' }} />
@@ -113,11 +159,15 @@ export default class Login extends React.Component {
                     <div style={{ height: '3vh' }} />
 
                     <button className='loginBtns loginBtn' onClick={this.login}>
-                        <p>{this.state.signup ? 'CONFIRM' : 'LOGIN'}</p>
+                        <p>
+                            {this.state.signup ? 'CONFIRM' : 'LOGIN'}
+                        </p>
                     </button>
                     {!this.state.signup && (window.location.href.startsWith('http://192.168') || window.location.href.startsWith('http://localhost')) &&
                         <button className='loginBtns signupBtn' onClick={this.signup}>
-                            <p>SIGN UP</p>
+                            <p>
+                                SIGN UP
+                            </p>
                         </button>
                     }
                 </div>
